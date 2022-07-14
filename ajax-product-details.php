@@ -10,10 +10,10 @@
  */
 
 /*
-Plugin Name: Ajax product details
+Plugin Name: Ajax product details (Personalizado)
 Plugin URI: https://arknite.dev/plugins/ajax-product-details
 Description: Obtiene el detalle de un producto mediante ajax, asi se puede mostrar en donde sea necesario en la página
-Version: 1.0
+Version: 1.0.0
 Author: Julio Cárdenas
 Author URI: https://arknite.dev
 Text Domain: ajax-product-details

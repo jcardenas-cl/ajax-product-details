@@ -1,3 +1,11 @@
+.apd-product-container {
+    position: fixed;
+    z-index: 100;
+    top: 50px;
+    width: 90%;
+    margin: 0 5%;
+    background: white;
+}
 .apd-product-container .apd-image-container {
     display: inline-block;
     width: 30%;

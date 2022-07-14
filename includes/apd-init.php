@@ -12,7 +12,9 @@ function apd_enqueue_scripts_and_styles() {
     wp_enqueue_script (
         'apd-core-script',
         plugin_dir_url( __FILE__ ) . '../public/js/apd-core.js',
-        array( 'jquery' )
+        array( 'jquery' ),
+		time(),
+		true
     );
 
 	wp_enqueue_style (
