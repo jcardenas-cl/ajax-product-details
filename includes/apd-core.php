@@ -57,7 +57,7 @@ function apd_get_product() {
 add_action( 'woocommerce_after_shop_loop_item', 'apd_add_quick_view_button', 25 );
 function apd_add_quick_view_button() {
     global $product;
-	if( is_product_category() || is_shop() ) {
+	if( (is_product_category() || is_shop()) and ( $product->is_type( 'variable' ) or $product->is_type( 'simple' ) ) ) {
 	?>
     <div class="apd-quick-view-container">
     <a
