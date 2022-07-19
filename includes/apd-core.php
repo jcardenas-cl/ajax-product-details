@@ -71,7 +71,7 @@ function apd_settings_screen () {
 	if ( !current_user_can( 'manage_options' ) )  {
 		wp_die( __( 'Necesita un perfil con otro nivel de acceso para editar esta configuración', 'my_site_info' ) );
 	}
-    
+    apd_collect_and_update();
     include plugin_dir_path( __FILE__ ) . '../admin/views/apd-settings.php';
 }
 
@@ -151,3 +151,14 @@ add_action( 'wp_footer', function() {
     </div>
     <?php
 } );
+
+function apd_collect_and_update() {
+    if ( isset( $_POST['rd-variation'] ) ) {
+        update_option( 'apd-variation-mode', $_POST['rd-variation'] );
+        update_option( 'apd-image-click', $_POST['rd-image-click'] );
+        update_option( 'apd-overlay-color', $_POST['overlay-color'] );
+        update_option( 'apd-buttons-color', $_POST['button-color'] );
+        update_option( 'apd-text-color', $_POST['text-color'] );
+        update_option( 'apd-quickview-style', $_POST['button-style'] );
+    }
+}

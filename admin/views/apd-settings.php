@@ -1,4 +1,13 @@
- <h3>Como ver productos variables</h3>
+<?php
+// Obtener la información de los ajustes
+$variation_mode = get_option('apd-variation-mode');
+$image_action   = get_option('apd-image-click');
+$overlay_color  = get_option('apd-overlay-color');
+$buttons_color  = get_option('apd-buttons-color');
+$text_color     = get_option('apd-text-color');
+$button_style   = get_option( 'apd-quickview-style' );
+?>
+<h3>Como ver productos variables</h3>
 <p><?php _e('Para los productos variables, puedes elegir entre mostrar todas las variedades en un solo select o separar cada atributo, de esta manera por ejemplo:', 'ajax-product-details' ); ?></p>
 <p><?php _e('Unificado', 'ajax-product-details' ); ?></p>
 Variedad
@@ -20,33 +29,36 @@ Color
     <option value="">M</option>
     <option value="">L</option>
 </select>
+<form action="" method="post" name="msi-form">
 <div>
     <label for="rd-variation"><?php _e( 'Estandar', 'ajax-product-details' ); ?>
-    <input type="radio" name="rd-variation" id="" value="standard"></label>
+    <input type="radio" name="rd-variation" id="" value="standard" <?php if( $variation_mode == 'standard') echo 'checked'; ?>></label>
     <label for="rd-variation"><?php _e( 'Unificado', 'ajax-product-details' ); ?>
-    <input type="radio" name="rd-variation" id="" value="unified"></label>
+    <input type="radio" name="rd-variation" id="" value="unified" <?php if( $variation_mode == 'unified') echo 'checked'; ?>></label>
 </div>
 <h3>Usar ajax para agregar productos al carrito</h3>
 <h3>Mostrar quickview al pulsar sobre la imágen</h3>
 <p><?php _e( 'Selecciona que ocurre cuando se pulsa sobre la imágen del producto' ); ?></p>
 <div>
     <label><?php _e( 'Ir a la url con el detalle del producto', 'ajax-product-details' ); ?>
-    <input type="radio" name="rd-image-click" id="" value="go-to-product-page"></label>
+    <input type="radio" name="rd-image-click" id="" value="go-to-product-page" <?php if( $image_action == 'go-to-product-page') echo 'checked'; ?>></label>
     <label><?php _e( 'Mostrar la vista rápida', 'ajax-product-details' ); ?>
-    <input type="radio" name="rd-image-click" id="" value="show-quickview"></label>
+    <input type="radio" name="rd-image-click" id="" value="show-quickview" <?php if( $image_action == 'show-quickview') echo 'checked'; ?>></label>
 </div>
 <h3>Colorpicker para botones y overlay</h3>
 <p><?php _e('Selecciona el color de fondo (seccion semitrasparente) en la vista rápida.', 'ajax-product-details'); ?></p>
-<input type="color" name="overlay-color" id="">
+<input type="color" name="overlay-color" id="" value="<?php echo $overlay_color; ?>">
 <p><?php _e('Selecciona el color de los botones', 'ajax-product-details'); ?></p>
-<input type="color" name="button-color" id="">
+<input type="color" name="button-color" id="" value="<?php echo $buttons_color; ?>">
 <p><?php _e('Selecciona el color de letra'); ?></p>
-<input type="color" name="text-color" id="">
+<input type="color" name="text-color" id="" value="<?php echo $text_color; ?>">
 <h3>Elegir estilo botón quick view</h3>
 <p><?php _e('Selecciona el modo en que se debe mostrar el botón para vista rápida', 'ajax-product-details'); ?></p>
     <label><?php _e('Botón', 'ajax-product-details'); ?>
-    <input type="radio" name="button-style" value="buttom" id=""></label>
+    <input type="radio" name="button-style" value="button" id="" <?php if( $button_style == 'button') echo 'checked'; ?>></label>
     <label><?php _e('Enlace', 'ajax-product-details'); ?>
-    <input type="radio" name="button-style" value="link" id=""></label>
+    <input type="radio" name="button-style" value="link" id="" <?php if( $button_style == 'link') echo 'checked'; ?>></label>
 <h3>Elegir plantilla</h3>
 <h3>Mostrar reviews del prod.</h3>
+<?php submit_button(__('Guardar', 'my_site_info'), 'primary'); ?>
+</form>
