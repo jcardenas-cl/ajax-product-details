@@ -16,10 +16,21 @@ function apd_enqueue_scripts_and_styles() {
 		time(),
 		true
     );
+	wp_enqueue_script (
+        'swiperjs',
+        'https://unpkg.com/swiper@8/swiper-bundle.min.js',
+        array(),
+		'8.3.1',
+		true
+    );
 
 	wp_enqueue_style (
 		'apd-core',
 		plugin_dir_url( __FILE__ ) . '../public/css/apd-styles.css'
+	);
+	wp_enqueue_style (
+		'swiperjs',
+		'https://unpkg.com/swiper@8/swiper-bundle.min.css'
 	);
 
 	wp_localize_script (

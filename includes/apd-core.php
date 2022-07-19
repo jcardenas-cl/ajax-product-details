@@ -7,6 +7,7 @@
  */
 add_action( 'wp_ajax_nopriv_apd_get_product', 'apd_get_product' );
 add_action( 'wp_ajax_apd_get_product', 'apd_get_product' );
+
 function apd_get_product() {
     $product_id = $_POST['product_id'];
     $_product   = wc_get_product( $product_id );
@@ -51,6 +52,31 @@ function apd_get_product() {
 }
 
 /**
+ * Agrega una entrada de menú a WooCommerce para controlar distintos aspectos del plugin.
+ * @since 1.0.0
+ */
+function apd_settings() {
+    add_submenu_page(
+        'woocommerce',
+        __( 'Ajax Product Details', 'ajax-product-details' ),
+        __( 'Ajax Product Details', 'ajax-product-details' ),
+        'manage_options',
+        'apd-settings',
+        'apd_settings_screen'
+    ); 
+}
+add_action( 'admin_menu', 'apd_settings' );
+
+function apd_settings_screen () {
+	if ( !current_user_can( 'manage_options' ) )  {
+		wp_die( __( 'Necesita un perfil con otro nivel de acceso para editar esta configuración', 'my_site_info' ) );
+	}
+    
+    include plugin_dir_path( __FILE__ ) . '../admin/views/apd-settings.php';
+}
+
+
+/**
  * Agrega un botón personalizado en el listado de productos por cada producto, en conjunto con las variedades y la cantidad, agrega mediante ajax el producto al carrito.
  * @since 1.0.0
  */
@@ -93,22 +119,21 @@ function apd_add_to_cart() {
 		do_action( 'woocommerce_ajax_added_to_cart', $product_id );
 		wp_send_json(
 			array(
-				'status' 			=> 'OK',
-				'products_on_cart'	=> woo_get_quantity_products_on_cart(),
-				'url_to_cart'		=> wc_get_cart_url(),
-				'message'			=> __( 'Producto agregado, ir al ', 'simple-add-to-cart') . '<a href="'.wc_get_cart_url().'">' . __('carrito', 'simple-add-to-cart') . '</a>',
-				'mini_cart'			=> woo_get_minicart(), // Funcion del tema, no del plugin 
+				'status' 		=> 'OK',
+				'url_to_cart'   => wc_get_cart_url(),
+				'message'		=> __( 'Producto agregado, ir al ', 'ajax-product-details') . '<a href="'.wc_get_cart_url().'">' . __('carrito', 'ajax-product-details') . '</a>',
 			)
 		);
 	} else {
-		// If there was an error adding to the cart, redirect to the product page to show any errors
-		$data = array(
-			'error'       => true,
-			'product_url' => apply_filters( 'woocommerce_cart_redirect_after_error', get_permalink( $product_id ), $product_id ),
-			'message'		=> $passed_validation,
-		);
-
-		wp_send_json( $data );
+        $message = '';
+        if ( !$passed_validation ) {
+            $message = __( 'Favor revise los datos ingresados', 'ajax-product-details' );
+        }
+		wp_send_json( array(
+			'status'        => 'error',
+			'product_url'   => apply_filters( 'woocommerce_cart_redirect_after_error', get_permalink( $product_id ), $product_id ),
+			'message'		=> strip_tags(wc_print_notices( true ), '<a>'),
+		));
 	}
 
 	wp_die();
@@ -116,6 +141,13 @@ function apd_add_to_cart() {
 
 add_action( 'wp_footer', function() {
     ?>
-    <div class="apd-general-container"></div>
+    <div class="apd-overlay apd-overwrite apd-hidden">
+        <div class="apd-general-container">
+            <div class="apd-close-modal-container">
+                <div class="apd-close-modal-btn">X</div>
+            </div>
+            <div class="apd-general-content-container"></div>
+        </div>
+    </div>
     <?php
 } );

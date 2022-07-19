@@ -1,40 +1,104 @@
-.apd-product-container {
+.apd-hidden {
+    display: none;
+}
+.d-flex { display: flex; }
+.w-10 { width: 10%; }
+.w-20 { width: 20%; }
+.w-30 { width: 30%; }
+.w-40 { width: 40%; }
+.w-50 { width: 50%; }
+.w-60 { width: 60%; }
+.w-70 { width: 70%; }
+.w-80 { width: 80%; }
+.w-90 { width: 90%; }
+.w-100 { width: 100%; }
+.apd-overlay {
     position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 100;
+    background-color: rgba(0,0,0,0.8);
+}
+.apd-general-container {
+    position: relative;
     top: 50px;
-    width: 90%;
-    margin: 0 5%;
+    width: 60%;
+    margin: auto;
     background: white;
 }
-.apd-product-container .apd-image-container {
+.apd-general-container input, select {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+.apd-general-container .apd-close-modal-container {
+    text-align: right;
+}
+.apd-general-container .apd-close-modal-btn {
+    display: inline-block;
+    margin-right: 7px;
+    cursor: pointer;
+    color: gray;
+    font-weight: bold;
+}
+.apd-general-container .apd-gallery-container {
+    width: 40%;
+    margin-left: 30px;
+}
+.apd-general-container .apd-gallery-container {
+    width: 40%;
+    margin-left: 30px;
+}
+.apd-general-container .apd-price-and-options {
+    width: 50%;
+}
+.apd-general-container .apd-buy-buttons {
+    width: 50%;
+}
+.apd-general-container .apd-description-container {
+    width: 60%;
+    margin-left: 30px;
+}
+.apd-general-container .apd-product-title {
+    margin: 0;
+}
+.apd-general-container .apd-add-to-cart {
+    background: #49bf78;
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+}
+.apd-general-container .apd-image-container {
     display: inline-block;
     width: 30%;
     text-align: center;
     vertical-align: top;
 }
-.apd-product-container .apd-image-container img {
+.apd-general-container .apd-image-container img {
     width: 90%;
 }
 
-.apd-product-container .apd-product-information-container {
+.apd-general-container .apd-product-information-container {
     display: inline-block;
     width: 69.5%;
 }
 
-.apd-product-container .variation {
+.apd-general-container .variation {
     margin-bottom: 10px;
 }
-.apd-product-container .lbl-attribute,
-.apd-product-container .lbl-product-quantity {
+.apd-general-container .lbl-attribute,
+.apd-general-container .lbl-product-quantity {
     display: inline-block;
     width: 20%;
 }
 
-.apd-product-container .buy-buttons {
+.apd-general-container .buy-buttons {
     margin-top: 10px;
 }
 
-.apd-product-container .apd-add-to-cart {
+.apd-general-container .apd-add-to-cart {
     background-color: rgb(74, 190, 136);
     color: white;
     border: none;
@@ -42,22 +106,67 @@
     cursor: pointer;
 }
 
-.apd-product-container .apd-cbo-variation,
-.apd-product-container .apd-product-quantity {
-    width: 8em;
+.apd-general-container .apd-cbo-variation,
+.apd-general-container .apd-product-quantity {
+    width: 70%;
 }
-
+.apd-general-container .apd-long-description-container {
+    font-size: 0.8em;
+    margin-top: 10px 0;
+    padding: 0 10px;
+}
+.apd-general-container .apd-notify {
+    font-size: 0.7em;
+    padding: 3px;
+    width: 80%;
+    text-align: justify;
+}
+.apd-general-container .apd-notify a.button {
+    background: none;
+    border: none;
+    color: black;
+    font-size: 1em;
+    padding: 0;
+    text-decoration: underline;
+}
 .apd-quick-view {
     width: 100%;
     margin-top: 10px;
 }
-
 @media screen and (max-width: 680px){
-    .apd-product-container .apd-cbo-variation,
-    .apd-product-container .apd-product-quantity,
-    .apd-product-container .apd-image-container,
-    .apd-product-container .apd-product-information-container,
-    .apd-product-container .apd-add-to-cart {
+    .apd-general-container .apd-cbo-variation,
+    .apd-general-container .apd-product-quantity,
+    .apd-general-container .apd-image-container,
+    .apd-general-container .apd-product-information-container,
+    .apd-general-container .apd-add-to-cart {
         width: 100%;
+    }
+    .apd-general-container {
+        width: 80%;
+        max-height: 90%;
+        top: 0;
+        overflow: auto;
+        margin-top: 5%;
+    }
+    .d-flex {
+        display: block;
+    }
+    .apd-general-container .apd-price-and-options {
+        text-align: center;
+        margin: auto;
+        font-size: 0.7em;
+    }
+    .apd-general-container .apd-buy-buttons {
+        margin: auto;
+        margin-top: 10px;
+    }
+    .apd-product-detail-container.d-flex {
+        display: block;
+    }
+    .apd-general-container .apd-gallery-container,
+    .apd-general-container .apd-description-container
+     {
+        width: 90%;
+        margin: 0 5%;
     }
 }
