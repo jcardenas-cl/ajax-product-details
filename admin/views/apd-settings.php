@@ -47,11 +47,11 @@ Color
 </div>
 <h3>Colorpicker para botones y overlay</h3>
 <p><?php _e('Selecciona el color de fondo (seccion semitrasparente) en la vista rápida.', 'ajax-product-details'); ?></p>
-<input type="color" name="overlay-color" id="" value="<?php echo $overlay_color; ?>">
+<input type="text" name="overlay-color" id="" value="<?php echo $overlay_color; ?>" data-coloris>
 <p><?php _e('Selecciona el color de los botones', 'ajax-product-details'); ?></p>
-<input type="color" name="button-color" id="" value="<?php echo $buttons_color; ?>">
+<input type="text" name="button-color" id="" value="<?php echo $buttons_color; ?>" data-coloris>
 <p><?php _e('Selecciona el color de letra'); ?></p>
-<input type="color" name="text-color" id="" value="<?php echo $text_color; ?>">
+<input type="text" name="text-color" id="" value="<?php echo $text_color; ?>" data-coloris>
 <h3>Elegir estilo botón quick view</h3>
 <p><?php _e('Selecciona el modo en que se debe mostrar el botón para vista rápida', 'ajax-product-details'); ?></p>
     <label><?php _e('Botón', 'ajax-product-details'); ?>

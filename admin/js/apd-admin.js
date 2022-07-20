@@ -1,0 +1,3 @@
+Coloris({
+    format: 'rgb',
+});

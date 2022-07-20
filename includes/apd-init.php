@@ -43,3 +43,27 @@ function apd_enqueue_scripts_and_styles() {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'apd_enqueue_scripts_and_styles');
+
+function apd_admin_scripts_and_styles( $hook ) {
+	if ( 'woocommerce_page_apd-settings' == $hook ) {
+		wp_enqueue_script (
+			'coloris',
+			plugin_dir_url( __FILE__ ) . '../vendor/js/coloris.min.js',
+			array(),
+			'1.0.0',
+			true
+		);
+		wp_enqueue_script (
+			'apd-script',
+			plugin_dir_url( __FILE__ ) . '../admin/js/apd-admin.js',
+			array('coloris'),
+			'1.0.0',
+			true
+		);
+		wp_enqueue_style (
+			'coloris',
+			plugin_dir_url( __FILE__ ) . '../vendor/css/coloris.min.css'
+		);
+	}
+}
+add_action( 'admin_enqueue_scripts', 'apd_admin_scripts_and_styles' );

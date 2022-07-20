@@ -26,6 +26,13 @@ if ( $product->is_type('variable')) {
     $product_price = wc_price( $product->get_price() );
 }
 
+// Obtener la configuracion de colores ajustada por el usuario
+$buttons_color  = get_option('apd-buttons-color');
+$text_color     = get_option('apd-text-color');
+
+$button_color_style = ('' != $buttons_color ) ? 'background-color: ' . $buttons_color . ';' : '';
+$text_color_style   = ('' != $text_color ) ? 'color: ' . $text_color . ';' : '';
+$style_button_css   = ( '' != $button_color_style or '' != $text_color_style ) ? ' style="'.$button_color_style.$text_color_style.'" ' : '';
 ?>
 <div class="apd-product-detail-container d-flex">
     <div class="apd-gallery-container">
@@ -90,6 +97,7 @@ if ( $product->is_type('variable')) {
                     </div>
                 <?php else: ?>
                     <button 
+                        <?php echo $style_button_css; ?>
                         standard-text="<?php _e( 'Agregar al carrito', 'ajax-product-details' ); ?>"
                         adding-text="<?php _e( 'Espere...', 'ajax-product-details' ); ?>"
                         class="apd-add-to-cart d-block py-1 text-center mb-3"><?php _e( 'Agregar al carrito', 'ajax-product-details' ); ?></button>

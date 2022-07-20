@@ -37,6 +37,7 @@ function apd_get_product() {
             $variations_info[] 				= $variation_data;
         }			
     }
+    
     set_query_var( 'product', $_product );
     set_query_var( 'variations', $variation_group );
     set_query_var( 'variations_json', $variations_info );
@@ -140,8 +141,13 @@ function apd_add_to_cart() {
 }
 
 add_action( 'wp_footer', function() {
+    $overlay_color  = get_option('apd-overlay-color');
+    $overlay_style  = "";
+    if ( ''!= trim($overlay_color) ) {
+        $overlay_style = 'style="background-color: '.$overlay_color.'";';
+    }
     ?>
-    <div class="apd-overlay apd-overwrite apd-hidden">
+    <div class="apd-overlay apd-overwrite apd-hidden"<?php echo $overlay_style; ?>>
         <div class="apd-general-container">
             <div class="apd-close-modal-container">
                 <div class="apd-close-modal-btn">X</div>
@@ -162,3 +168,19 @@ function apd_collect_and_update() {
         update_option( 'apd-quickview-style', $_POST['button-style'] );
     }
 }
+
+function apd_custom_product_link() {
+	global $product;
+	echo '<a
+        product-id="'.$product->get_ID().'"
+        class="woocommerce-LoopProduct-link woocommerce-loop-product__link apd-quick-view"
+        href="#apd-product-info">';
+}
+
+function apd_remove_links() {
+    if ( 'show-quickview' == get_option('apd-image-click') ) {
+        remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10 );
+        add_action( 'woocommerce_before_shop_loop_item_title', 'apd_custom_product_link', 9);
+    }
+}
+add_action( 'woocommerce_before_shop_loop', 'apd_remove_links' );
