@@ -1,4 +1,3 @@
-
 /**
  * Agrega al carrito de compras un producto o variedad, con la cantidad seleccionada por el usuario.
  * 
@@ -86,6 +85,7 @@ if ( typeof apd_load_content_to_html !== 'function' ) {
 
     init_swiper()
     apd_check_quantity()
+    init_attribute_actions()
 }
 
 /**
@@ -216,3 +216,42 @@ apd_quick_view_buttons.forEach( quick_view_button => {
     const product_id = quick_view_button.getAttribute('product-id')
     quick_view_button.addEventListener('click', () => { apd_trigger_load_content( product_id ) })
 })
+
+/**
+ * En base a los atributos seleccionados de un producto, muestra los datos de la combinación, como precio, stock, etc.
+ */
+function apd_display_variation_info() {
+    const attribute_selects = document.querySelectorAll('.apd-variation-select')
+    const variation_data    = JSON.parse(document.querySelector('.apd_product_variations').value)
+    let user_selection = {}
+    attribute_selects.forEach( select => {
+        if ( select.value == '' ) { 
+            // Reestablecer a vista inicial
+            document.querySelector('.apd-variation-description').innerHTML = ''
+            document.querySelector('.apd-variation-description').classList.add('apd-hidden')
+            document.querySelector('.apd-short-description').classList.remove('apd-hidden')
+        }
+        user_selection[select.getAttribute('name')] = select.value
+    })
+
+    variation_data.forEach( item => {
+        const attributes = item.attributes
+        if ( lodash.isEqual( attributes, user_selection ) ) {
+            console.log(item)
+            document.querySelector('.apd-product-price').innerHTML = item.price_html
+            document.querySelector('.apd-hint-quantity').innerHTML = item.availability_html
+            document.querySelector('.apd-variation-description').innerHTML = item.variation_description
+            document.querySelector('.apd-product-quantity').setAttribute('apd-max-quantity', item.max_qty)
+            document.querySelector('.apd-product-quantity').setAttribute('apd-min-quantity', item.min_qty)
+            document.querySelector('.apd-variation-description').classList.remove('apd-hidden')
+            document.querySelector('.apd-short-description').classList.add('apd-hidden')
+        }
+    })
+}
+
+function init_attribute_actions () {
+    const attribute_selects = document.querySelectorAll('.apd-variation-select')
+    attribute_selects.forEach(element => {
+        element.addEventListener('change', () => { apd_display_variation_info() })
+    });
+}

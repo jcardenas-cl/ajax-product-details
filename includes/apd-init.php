@@ -8,11 +8,14 @@ function apd_enqueue_scripts_and_styles() {
 	if ( ! wp_script_is( 'jquery' ) ) {
 		wp_enqueue_script( 'jquery' );
 	}
-    
+
+	if ( ! wp_script_is( 'lodash' ) ) {
+		wp_enqueue_script('lodash');
+	}
     wp_enqueue_script (
         'apd-core-script',
         plugin_dir_url( __FILE__ ) . '../public/js/apd-core.js',
-        array( 'jquery' ),
+        array( 'jquery', 'lodash' ),
 		time(),
 		true
     );

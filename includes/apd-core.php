@@ -39,7 +39,6 @@ function apd_get_product() {
     }
     
     set_query_var( 'product', $_product );
-    set_query_var( 'variations', $variation_group );
     set_query_var( 'variations_json', $variations_info );
     
     // Con este codigo, se podra sobreescribir la plantilla original del sistema si se deja con la ruta determinada
@@ -50,6 +49,107 @@ function apd_get_product() {
     }
     
     wp_die();
+}
+
+/**
+ * Obtiene un arreglo con información de todas las variedades disponibles del producto, además información de los atributos relacionados al producto para ser mostrados
+ * en un select.
+ * @since 1.0.0
+ * 
+ * @param int $product_id ID del producto
+ * @return array|bool Arreglo con los datos del producto, false en caso de no encotrar datos.
+ */
+function apd_list_product_variations( $product_id ) {
+    if ( !is_numeric( $product_id) ) return false;
+    $product   = wc_get_product( $product_id );
+	
+    if ( $product->is_type( 'variable' ) ) {
+        $variation_group 	= array();
+        $json_output		= array(); // Todas las variedades que se imprimiran en un string json
+        $variations 		= $product->get_available_variations();
+        print_r($product->get_attributes());
+        /**
+         * Ciclo de cada variación, la cual esta compuesta de una serie de caracteristicas estandar como el stock, precio, sku, etc.
+         * También cuenta con la llave "attributes", la cual contiene la combinación de sus atributos, por ejemplo:
+         * [attributes] => Array (
+         *    [attribute_color] => Rojo
+         *    [attribute_talla] => M
+         * ),
+         * [display_price] => 1000,
+         * [variation_id] => 22,
+         * [is_purchasable] => 1,
+         * (...)
+         */
+        $attribute_options = array();
+        foreach ( $variations as $variation ) {
+            $variation_data = array();
+            foreach( $variation as $variation_key => $variation_value ):
+                // Recorriendo las variedades, aislamos los atributos para poder presentar los select con cada opcion disponible.
+                if ( 'attributes' == $variation_key ) {
+                    $attributes = $variation_value;
+                    /**
+                     * Aquí empezamos a rescatar los atributos del productos, puede darse el caso que no todos los productos tengan
+                     * los mismos valores (por ejemplo, que no tenga stock en color azul) asi que se debe consultar si el valor ya
+                     * se encuentra en el arreglo para agregarlo si otro producto tuviera otros valores.
+                     */
+                    foreach ( $attributes as $attribute_key => $attribute_value ) {
+                        if ( !in_array( $attribute_value, $attribute_options[$attribute_key] ) ) {
+                            $attribute_options[$attribute_key][] = $attribute_value;
+                        }
+                    }
+                }
+                if ( 'display_price' == $variation_key ) {
+                    $variation_data[$variation_key] = wc_price($variation_value);
+                } else {
+                    $variation_data[$variation_key] = $variation_value; // Copiar todos los datos de la variedad
+                }
+                
+            endforeach;
+        }
+    } else {
+        return false;
+    }
+
+    $select_info    = array();
+    $i              = 0;
+    // Lo mismo de talla y color de polera
+    foreach ( $attribute_options as $key => $value ) {
+        $select_options = array(); 
+        $j              = 0;
+        $options        = $value; // Ej: Array ( [0] => 30gr [1] => 50gr [2] => 100gr [3] => 250gr )
+        // $key es la llave del atributo, como por ejemplo "attribute_color"
+        $select_info[$i]['select_label']    = 'Definir';
+        $select_info[$i]['select_name']     = $key;
+        $select_options[$j]['option_label'] = __( '- Seleccione -', 'ajax-product-details' );
+        $select_options[$j]['option_value'] = -1;
+        $j++;
+        for ( $k = 0; $k <= count( $options ) - 1; $k++ ) { // Cada opcion de una caracteristica especifica
+            $select_options[$j]['option_label'] = $options[$k];
+            $select_options[$j]['option_value'] = $options[$k];
+            $j++;
+        }
+        $select_info[$i]['select_options'] = $select_options;
+        $i++;
+    }
+    /**
+     * Salida esperada
+     * $output['variation_json'] = <info de cada variedad del producto como precios, stock, sku, etc>
+     * $output['options'] = array(
+     *   array(
+     *     'select_label => 'Color',
+     *     'select_name' => 'attribute_color',
+     *     'options' => array(
+     *       array( 'option_label' => 'Rojo', 'option_value' => 'rojo' ),
+     *       array( 'option_label' => 'Azul', 'option_value' => 'azul' ),
+     *     )
+     *   )
+     * )
+     */
+	
+    return array(
+        'variarion_info'=> $variation_data,
+        'options'       => $select_info,
+    );
 }
 
 /**
@@ -184,3 +284,5 @@ function apd_remove_links() {
     }
 }
 add_action( 'woocommerce_before_shop_loop', 'apd_remove_links' );
+
+add_image_size( 'apd-product-thumbnail', 200, 200 );
