@@ -86,6 +86,7 @@ if ( typeof apd_load_content_to_html !== 'function' ) {
     init_swiper()
     apd_check_quantity()
     init_attribute_actions()
+    apd_change_quantity_buttons()
 }
 
 /**
@@ -254,4 +255,25 @@ function init_attribute_actions () {
     attribute_selects.forEach(element => {
         element.addEventListener('change', () => { apd_display_variation_info() })
     });
+}
+
+/**
+ * 
+ */
+function apd_change_quantity_buttons () {
+    const increase_btn  = document.querySelector('.apd-increase-quantity')
+    const decrease_btn  = document.querySelector('.apd-decrease-quantity')
+    const quantity      = document.querySelector('.apd-product-quantity')
+
+    increase_btn.addEventListener('click', () => {
+        if ( '' == quantity.getAttribute('apd-max-quantity') || quantity.value < quantity.getAttribute('apd-max-quantity') ) {
+            quantity.value = parseInt(quantity.value) + 1
+        }
+    })
+
+    decrease_btn.addEventListener('click', () => {
+        if ( quantity.value > quantity.getAttribute('apd-min-quantity') ) {
+            quantity.value = parseInt(quantity.value) - 1
+        }
+    })
 }

@@ -83,13 +83,13 @@ $style_button_css   = ( '' != $button_color_style or '' != $text_color_style ) ?
                 <?php endif; ?>
                 <div class="apd-quantity-container">
                     <label class="label" for="number"><?php _e( 'Cantidad', 'ajax-product-detail' ); ?></label>
-                    <button>-</button>
+                    <button class="apd-decrease-quantity">-</button>
                     <input
                         type="number"
                         class="number apd-product-quantity"
                         id="number"
                         value="0">
-                    <button>+</button>
+                    <button class="apd-increase-quantity">+</button>
                     <div class="apd-hint-quantity"></div>
                 </div>
             </div>

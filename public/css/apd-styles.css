@@ -129,6 +129,18 @@
     width: 100%;
     margin-top: 10px;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 @media screen and (max-width: 680px){
     .apd-general-container .apd-cbo-variation,
     .apd-general-container .apd-product-quantity,
