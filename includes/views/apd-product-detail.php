@@ -36,6 +36,9 @@ $text_color_style   = ( '' != $text_color ) ? 'color: ' . $text_color . ';' : ''
 $style_button_css   = ( '' != $button_color_style or '' != $text_color_style ) ? ' style="' . $button_color_style.$text_color_style . '" ' : '';
 ?>
 <div class="apd-product-detail-container d-flex">
+    <div class="apd-variation-image-container apd-hidden">
+
+    </div>
     <div class="apd-gallery-container">
         <div
             style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff;"
@@ -63,7 +66,8 @@ $style_button_css   = ( '' != $button_color_style or '' != $text_color_style ) ?
 
     <div class="apd-description-container">
         <h3 class="apd-product-title"><?php echo $product->get_title(); ?></h3>
-        <div class="apd-product-price"><?php echo $product_price; ?></div>
+        <div class="apd-product-regular-price"><?php echo $product_price; ?></div>
+        <div class="apd-product-variation-price"></div>
         <div class="apd-short-description">
             <?php echo $product->get_short_description(); ?>
         </div>
@@ -94,10 +98,13 @@ $style_button_css   = ( '' != $button_color_style or '' != $text_color_style ) ?
                 </div>
             </div>
             <div class="apd-related-products">
+                <?php
+                $upsells = $product->get_upsells(); // Retorna el ID de los productos
+                if( count( $upsells ) > 0 ):
+                ?>
                 <strong><?php _e( 'Tal vez te interese', 'ajax-product-details' ); ?></strong>
                 <div class="products">
                     <?php
-                    $upsells = $product->get_upsells(); // Retorna el ID de los productos
                     foreach( $upsells as $product_id ):
                         $upsell_product = new WC_Product( $product_id );
                         ?>
@@ -111,6 +118,7 @@ $style_button_css   = ( '' != $button_color_style or '' != $text_color_style ) ?
                     endforeach;
                     ?>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
         <div class="apd-buy-buttons">

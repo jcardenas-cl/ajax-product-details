@@ -231,6 +231,10 @@ function apd_display_variation_info() {
             document.querySelector('.apd-variation-description').innerHTML = ''
             document.querySelector('.apd-variation-description').classList.add('apd-hidden')
             document.querySelector('.apd-short-description').classList.remove('apd-hidden')
+            document.querySelector('.apd-product-regular-price').classList.remove('apd-hidden')
+            document.querySelector('.apd-product-variation-price').classList.add('apd-hidden')
+            document.querySelector('.apd-gallery-container').classList.remove('apd-hidden')
+            document.querySelector('.apd-variation-image-container').classList.add('apd-hidden')
         }
         user_selection[select.getAttribute('name')] = select.value
     })
@@ -239,13 +243,22 @@ function apd_display_variation_info() {
         const attributes = item.attributes
         if ( lodash.isEqual( attributes, user_selection ) ) {
             console.log(item)
-            document.querySelector('.apd-product-price').innerHTML = item.price_html
-            document.querySelector('.apd-hint-quantity').innerHTML = item.availability_html
-            document.querySelector('.apd-variation-description').innerHTML = item.variation_description
+            document.querySelector('.apd-product-variation-price').innerHTML    = item.price_html
+            document.querySelector('.apd-hint-quantity').innerHTML              = item.availability_html
+            document.querySelector('.apd-variation-description').innerHTML      = item.variation_description
+            document.querySelector('.apd-variation-id').value                   = item.variation_id
             document.querySelector('.apd-product-quantity').setAttribute('apd-max-quantity', item.max_qty)
             document.querySelector('.apd-product-quantity').setAttribute('apd-min-quantity', item.min_qty)
+            document.querySelector('.apd-product-regular-price').classList.add('apd-hidden')
+            document.querySelector('.apd-product-variation-price').classList.remove('apd-hidden')
             document.querySelector('.apd-variation-description').classList.remove('apd-hidden')
             document.querySelector('.apd-short-description').classList.add('apd-hidden')
+
+            if ( item.image ) {
+                document.querySelector('.apd-variation-image-container').innerHTML = `<img src="${item.image.url}" />`
+                document.querySelector('.apd-gallery-container').classList.add('apd-hidden')
+                document.querySelector('.apd-variation-image-container').classList.remove('apd-hidden')
+            }
         }
     })
 }
@@ -277,3 +290,8 @@ function apd_change_quantity_buttons () {
         }
     })
 }
+
+const apd_overlay = document.querySelector('.apd-overlay')
+apd_overlay.addEventListener('click', () => {
+    apd_overlay.classList.add('apd-hidden')
+})
