@@ -54,7 +54,7 @@
             </div>
             
             <div>
-                <a href="#">Ver todos los detalles de <?php echo $product->get_name(); ?></a>
+                <a href="#"><small>Ver todos los detalles de <?php echo $product->get_name(); ?></small></a>
             </div>
         </div>
     </div>
