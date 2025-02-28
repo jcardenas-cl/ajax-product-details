@@ -1,0 +1,15 @@
+{
+  "name": "ajax-product-details",
+  "version": "1.0.0",
+  "description": "Plugin para WordPress + WooCommerce que permite visualizar las caracteristicas de un producto sin acceder a la página de detalles",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass_watch": "sass --watch src/sass/apd.scss:dist/css/apd.min.css  --style compressed"
+  },
+  "author": "Julio Cárdenas",
+  "license": "ISC",
+  "dependencies": {
+    "sass": "^1.81.0"
+  }
+}

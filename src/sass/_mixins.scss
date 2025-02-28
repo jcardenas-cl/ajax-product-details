@@ -1,0 +1,28 @@
+@mixin apd_button {
+    display: inline-block;
+    text-align: center;
+    padding: .8em;
+    font-size: 1em;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+@mixin apd_outline_button {
+    font-size: 1em;
+    padding: 0.15em .9em;
+    border: 1px solid black;
+    border-radius: 3px;
+    background-color: white;
+    cursor: pointer;
+    &:hover {
+        cursor: pointer;
+        background-color: rgb(203, 203, 203);
+    }
+    &.selected {
+        background-color: black;
+        color: white;
+    }
+}

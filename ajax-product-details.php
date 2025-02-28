@@ -1,19 +1,9 @@
 <?php
-/**
- * Archivo inicial del plugin
- *
- * @category Install
- * @package  Install
- * @author   Julio Cárdenas <julio@arknite.dev>
- * @license  GPLv2 or later
- * @link     https://arknite.dev/plugins/ajax-product-details
- */
-
 /*
-Plugin Name: Ajax product details (Personalizado)
+Plugin Name: Ajax Product Details
 Plugin URI: https://arknite.dev/plugins/ajax-product-details
-Description: Obtiene el detalle de un producto mediante ajax, asi se puede mostrar en donde sea necesario en la página
-Version: 1.0.0
+Description: Muestra las caracteristicas de un producto directamente en el listado de productos. También permite agregar el producto al carrito de compras y seleccionar sus atributos.
+Version: 0.5.0
 Author: Julio Cárdenas
 Author URI: https://arknite.dev
 Text Domain: ajax-product-details

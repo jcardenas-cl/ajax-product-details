@@ -48,7 +48,7 @@ if ( typeof apd_load_content_to_html !== 'function' ) {
      * @param {string} content Texto HTML con el contenido del producto.
      */
     function apd_load_content_to_html (content) {
-        jQuery( '.apd-general-content-container' ).html( content )
+        jQuery( '.apd-overlay' ).html( content )
         jQuery( '.apd-overlay' ).removeClass('apd-hidden')
 
         apd_action_triggers()
@@ -79,7 +79,7 @@ if ( typeof apd_load_content_to_html !== 'function' ) {
         apd_init_add_to_cart()
     })
 
-    jQuery( '.apd-close-modal-btn' ).click( function() {
+    jQuery( '.apd-modal .modal-close' ).click( function() {
         jQuery( '.apd-overlay' ).addClass('apd-hidden')
     })
 
@@ -215,7 +215,10 @@ async function apd_init_add_to_cart () {
 const apd_quick_view_buttons = document.querySelectorAll('.apd-quick-view')
 apd_quick_view_buttons.forEach( quick_view_button => {
     const product_id = quick_view_button.getAttribute('product-id')
-    quick_view_button.addEventListener('click', () => { apd_trigger_load_content( product_id ) })
+    quick_view_button.addEventListener('click', (btn) => {
+        this.innerText = 'Espere'
+        apd_trigger_load_content( product_id )
+    })
 })
 
 /**
@@ -290,8 +293,3 @@ function apd_change_quantity_buttons () {
         }
     })
 }
-
-const apd_overlay = document.querySelector('.apd-overlay')
-apd_overlay.addEventListener('click', () => {
-    apd_overlay.classList.add('apd-hidden')
-})

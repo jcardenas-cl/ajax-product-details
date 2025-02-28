@@ -24,7 +24,7 @@ function apd_get_product() {
             $att_group		= array();
             $j = 0;
             foreach ( $attributes as $attribute_key => $value ) {
-                if ( !in_array( $value, $variation_group[$attribute_key] ) ) {
+                if ( !isset($variation_group[$attribute_key]) or !in_array( $value, $variation_group[$attribute_key] ) ) {
                     $variation_group[$attribute_key][] = $value;
                 }
                 $att_group[$j]['att_name'] 	= $attribute_key;
@@ -45,7 +45,7 @@ function apd_get_product() {
     if ( file_exists( get_stylesheet_directory() . '/apd/apd-product-detail.php' ) ) {
         load_template( get_stylesheet_directory() . '/apd/apd-product-detail.php'  );
     } else {
-        load_template( plugin_dir_path( __FILE__ ) . 'views/apd-product-detail.php' );
+        load_template( plugin_dir_path( __FILE__ ) . 'views/apd-template-1.php' );
     }
     
     wp_die();
@@ -241,19 +241,8 @@ function apd_add_to_cart() {
 }
 
 add_action( 'wp_footer', function() {
-    $overlay_color  = get_option('apd-overlay-color');
-    $overlay_style  = "";
-    if ( ''!= trim($overlay_color) ) {
-        $overlay_style = 'style="background-color: '.$overlay_color.'";';
-    }
     ?>
-    <div class="apd-overlay apd-overwrite apd-hidden"<?php echo $overlay_style; ?>>
-        <div class="apd-general-container">
-            <div class="apd-close-modal-container">
-                <div class="apd-close-modal-btn">X</div>
-            </div>
-            <div class="apd-general-content-container"></div>
-        </div>
+    <div class="apd-overlay apd-hidden">
     </div>
     <?php
 } );
@@ -286,3 +275,80 @@ function apd_remove_links() {
 add_action( 'woocommerce_before_shop_loop', 'apd_remove_links' );
 
 add_image_size( 'apd-product-thumbnail', 200, 200 );
+
+function get_product_image_url($product_id) {
+    // Obtén el ID del producto de WooCommerce
+    $product = wc_get_product($product_id);
+
+    // Obtén el ID de la imagen destacada
+    $image_id = $product->get_image_id();
+
+    if ($image_id) {
+        // Si existe una imagen, obtenemos la URL
+        $image_url = wp_get_attachment_url($image_id);
+    } else {
+        // Si no existe una imagen, usamos la imagen predeterminada de WooCommerce
+        $image_url = wc_placeholder_img_src();
+    }
+
+    return $image_url;
+}
+
+function get_product_gallery_image_url($product_id) {
+    // Obtén la instancia del producto de WooCommerce
+    $product = wc_get_product($product_id);
+
+    // Obtén los IDs de las imágenes de la galería
+    $gallery_image_ids = $product->get_gallery_image_ids();
+
+    // Si no hay imágenes en la galería, retorna false
+    if (empty($gallery_image_ids)) {
+        return false;
+    }
+
+    // Obtén las URLs de las imágenes de la galería
+    $gallery_images = array_map('wp_get_attachment_url', $gallery_image_ids);
+
+    return $gallery_images;
+}
+
+function get_product_variations_by_attribute($product_id) {
+    $product = wc_get_product($product_id);
+
+    if (!$product || !$product->is_type('variable')) {
+        return []; // Asegúrate de que sea un producto variable.
+    }
+
+    $variations = [];
+    $attributes = $product->get_variation_attributes(); // Obtén los atributos del producto.
+
+    foreach ($attributes as $attribute_name => $attribute_values) {
+        $variations[$attribute_name] = array_values($attribute_values);
+    }
+
+    // Incluye las combinaciones completas con el ID de cada producto variable.
+    $variable_products = $product->get_available_variations();
+    $variation_map = [];
+
+    foreach ($variable_products as $variation) {
+        $variation_attributes = $variation['attributes'];
+        $variation_id = $variation['variation_id'];
+
+        // Normaliza las claves de los atributos (remueve "attribute_" para uniformidad).
+        $normalized_attributes = [];
+        foreach ($variation_attributes as $key => $value) {
+            $key = str_replace('attribute_', '', $key);
+            $normalized_attributes[$key] = $value;
+        }
+
+        $variation_map[] = [
+            'attributes' => $normalized_attributes,
+            'variation_id' => $variation_id,
+        ];
+    }
+
+    return [
+        'attributes' => $variations,
+        'variations_map' => $variation_map,
+    ];
+}

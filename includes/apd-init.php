@@ -29,7 +29,7 @@ function apd_enqueue_scripts_and_styles() {
 
 	wp_enqueue_style (
 		'apd-core',
-		plugin_dir_url( __FILE__ ) . '../public/css/apd-styles.css'
+		plugin_dir_url( __FILE__ ) . '../dist/css/apd.min.css'
 	);
 	wp_enqueue_style (
 		'swiperjs',

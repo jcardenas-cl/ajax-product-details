@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpUndefinedFunctionInspection */
 // Obtener la información de los ajustes
 $variation_mode = get_option('apd-variation-mode');
 $image_action   = get_option('apd-image-click');

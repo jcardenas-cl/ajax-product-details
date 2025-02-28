@@ -35,7 +35,7 @@ $button_color_style = ( '' != $buttons_color ) ? 'background-color: ' . $buttons
 $text_color_style   = ( '' != $text_color ) ? 'color: ' . $text_color . ';' : '';
 $style_button_css   = ( '' != $button_color_style or '' != $text_color_style ) ? ' style="' . $button_color_style.$text_color_style . '" ' : '';
 ?>
-<div class="apd-product-detail-container d-flex">
+
     <div class="apd-variation-image-container apd-hidden">
 
     </div>
@@ -151,4 +151,3 @@ $style_button_css   = ( '' != $button_color_style or '' != $text_color_style ) ?
         </div>
     </div>
 
-</div>
