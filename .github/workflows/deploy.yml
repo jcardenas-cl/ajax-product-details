@@ -21,6 +21,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            pwd
-            cd /var/www/store/wp-content/plugins
-            git pull origin main
+            mkdir -p /var/www/store/wp-content/plugins/ajax-product-details
+            chown -R webadmin:www-data /var/www/store/wp-content/plugins/ajax-product-details
+              
+      
+      - name: Sync files with rsync
+        run: |
+          rsync -avz --delete --exclude=".git" -e "ssh -p 22 -i ~/.ssh/id_rsa" ./ \
+          ${{ secrets.SSH_USER }}@${{ vars.DEPLOY_TARGET_IP }}:/var/www/store/wp-content/plugins/ajax-product-details/
