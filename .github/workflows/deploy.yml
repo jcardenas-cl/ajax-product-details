@@ -14,11 +14,15 @@ jobs:
 
       # Paso 2: Configurar SSH para acceder al servidor
       - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
+        uses: appleboy/ssh-action@v1.2.1
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.HOST_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
 
       # Paso 3: Copiar archivos al servidor
-      - name: Deploy to Server
+      - name: Deploying to Server ${{ secrets.HOST_IP }}
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.HOST_IP }} "cd ${{ secrets.DEPLOY_PATH }} && git pull origin main"
+          cd ${{ secrets.DEPLOY_PATH }}
+          git pull origin main
