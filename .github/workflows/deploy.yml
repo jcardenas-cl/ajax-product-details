@@ -2,28 +2,27 @@ name: Deploy to VPS
 
 on:
   push:
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Paso 1: Revisar el repositorio
+      # Paso 1: Check out repository
       - name: Check out repository
         uses: actions/checkout@v2
 
-      # Paso 2: Configurar SSH para acceder al servidor
-      - name: Set up SSH
+      # Paso 2: Conectar y ejecutar comandos en el servidor
+      - name: Deploying to Server
         uses: appleboy/ssh-action@v1.2.1
         with:
           host: ${{ vars.DEPLOY_TARGET_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-
-      # Paso 3: Copiar archivos al servidor
-      - name: Deploying to Server ${{ vars.DEPLOY_TARGET_IP }}
-        run: |
-          pwd
-          cd /var/www/store/wp-content/plugins
-          git pull origin main
+          script: |
+            pwd
+            cd /var/www/store/wp-content/plugins
+            git pull origin main
