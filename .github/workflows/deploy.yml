@@ -16,13 +16,13 @@ jobs:
       - name: Set up SSH
         uses: appleboy/ssh-action@v1.2.1
         with:
-          host: ${{ env.DEPLOY_TARGET_IP }}
+          host: ${{ vars.DEPLOY_TARGET_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
 
       # Paso 3: Copiar archivos al servidor
-      - name: Deploying to Server ${{ env.DEPLOY_TARGET_IP }}
+      - name: Deploying to Server ${{ vars.DEPLOY_TARGET_IP }}
         run: |
           pwd
           cd /var/www/store/wp-content/plugins
