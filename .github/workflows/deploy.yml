@@ -24,5 +24,6 @@ jobs:
       # Paso 3: Copiar archivos al servidor
       - name: Deploying to Server ${{ secrets.HOST_IP }}
         run: |
+          ls -la /var/www/store/
           cd /var/www/store/wp-content/plugins
           git pull origin main
