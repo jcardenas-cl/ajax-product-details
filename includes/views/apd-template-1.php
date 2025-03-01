@@ -50,11 +50,15 @@
 
             <div class="quantity">
                 <div><span class="in-stock">En stock</span></div>
-                <input type="number" name="txt-quantity" value="1"><button class="apd-add-to-cart">Agregar al carrito</button>
+                <input type="number" name="txt-quantity" value="1">
             </div>
+
+            <button class="apd-add-to-cart">Agregar al carrito</button>
             
             <div>
-                <a href="#"><small>Ver todos los detalles de <?php echo $product->get_name(); ?></small></a>
+                <a 
+                class="view-full-details"
+                href="#">Ver todos los detalles</a>
             </div>
         </div>
     </div>

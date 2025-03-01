@@ -89,6 +89,10 @@
                         font-size: 1em;
                     }
                 }
+                .view-full-details {
+                    font-size: .6em;
+                    font-style: italic;
+                }
                 .apd-add-to-cart {
                     @include index.apd_button
                 }
