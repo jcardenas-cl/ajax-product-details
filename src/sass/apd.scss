@@ -18,9 +18,9 @@
     .apd-modal {
         position: relative;
         background-color: #fff;
-        border-radius: 8px;
+        border-radius: 3px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        max-width: 1000px;
+        max-width: 900px;
         max-height: 90vh;
         width: 90%;
         padding: 20px;
@@ -95,6 +95,24 @@
                 }
                 .apd-add-to-cart {
                     @include index.apd_button
+                }
+            }
+        }
+        @media screen and (max-width: 600px){
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0;
+            .apd-modal-content-container {
+                width: 100%;
+                display: block;
+                .product-gallery-section {
+                    width: 100%;
+                    display: block;
+                    .main-image {
+                        width: 100%;
+                    }
                 }
             }
         }
