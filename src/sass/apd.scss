@@ -15,6 +15,10 @@
     &.apd-hidden {
         display: none;
     }
+    .close-handler {
+        display: none;
+        cursor: pointer;
+    }
     .apd-modal {
         position: relative;
         background-color: #fff;
@@ -58,8 +62,8 @@
                     justify-content: center;
                     gap: 10px;
                     margin-bottom: 20px;
-                    .gallery-thumb {
-                        max-width: 70px;
+                    .g-item {
+                        display: inline-block;
                     }
                 }
             }
@@ -98,6 +102,11 @@
                         font-size: 1em;
                     }
                 }
+                .modal-options {
+                    button {
+                        color: black;
+                    }
+                }
                 .view-full-details {
                     font-size: .6em;
                     font-style: italic;
@@ -114,7 +123,18 @@
             width: 100%;
             padding: 0;
             max-height: 60vh;
-            
+            border-radius: 10px;
+            .modal-close {
+                display: none;
+            }
+            .close-handler {
+                display: block;
+                width: 80%;
+                height: 5px;
+                background-color: rgb(209, 209, 209);
+                border-radius: 20px;
+                margin: 10px auto;
+            }
             .product-title{
                 text-align: center;
             }
