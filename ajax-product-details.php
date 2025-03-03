@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Ajax Product Details
+Plugin Name: Quick Product Details
 Plugin URI: https://arknite.dev/plugins/ajax-product-details
 Description: Muestra las caracteristicas de un producto directamente en el listado de productos. También permite agregar el producto al carrito de compras y seleccionar sus atributos.
 Version: 0.5.0

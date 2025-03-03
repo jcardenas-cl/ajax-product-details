@@ -1,7 +1,8 @@
 
-<div class="apd-modal">
-    <!-- Botón de cerrar -->
+<div class="apd-modal apd-override">
     <button class="modal-close">&times;</button>
+
+    <h2 class="product-title"><?php echo $product->get_name(); ?></h2>
     <div class="apd-modal-content-container">
         <!-- Sección con la galería -->
         <div class="product-gallery-section">
@@ -24,9 +25,8 @@
 
         <!-- Sección con los contenidos -->
         <div class="modal-content">
-            <h2><?php echo $product->get_name(); ?></h2>
+            <div><?php echo $product->get_short_description(); ?></div>
             <div><?php echo wc_price($product->get_price()); ?></div>
-            <p><?php echo $product->get_short_description(); ?></p>
             <?php
             $variation = get_product_variations_by_attribute($product->get_ID());
             $variation = $variation['attributes'];
@@ -49,7 +49,7 @@
             ?>
 
             <div class="quantity">
-                <div><span class="in-stock">En stock</span></div>
+                <div><span class="in-stock"><?php _e('En stock','ajax-product-details'); ?></span></div>
                 <input type="number" name="txt-quantity" value="1">
             </div>
 
