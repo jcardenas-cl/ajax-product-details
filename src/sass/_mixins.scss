@@ -1,7 +1,7 @@
 @mixin apd_button {
     display: inline-block;
     text-align: center;
-    padding: .8em;
+    padding: .5em;
     font-size: 1em;
     background-color: black;
     color: white;
@@ -11,10 +11,10 @@
 }
 
 @mixin apd_outline_button {
-    font-size: 1em;
-    padding: 0.15em .9em;
+    font-size: .8em;
+    padding: 0.15em .8em;
     border: 1px solid black;
-    border-radius: 3px;
+    border-radius: 5px;
     background-color: white;
     cursor: pointer;
     &:hover {

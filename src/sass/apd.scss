@@ -18,15 +18,18 @@
     .apd-modal {
         position: relative;
         background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        max-width: 1000px;
+        border-radius: 5px;
+        max-width: 900px;
         max-height: 90vh;
         width: 90%;
-        padding: 20px;
+        padding: 10px;
         height: auto;
         overflow: auto;
         text-align: center;
+        .product-title {
+            text-align: left;
+            margin: 0 10px 10px 10px;
+        }
         .modal-close {
             position: absolute;
             top: 10px;
@@ -48,7 +51,6 @@
                 flex: 0 0 45%;
                 .main-image {
                     width: 95%;
-                    border-radius: 4px;
                     margin-bottom: 15px;
                 }
                 .modal-gallery {
@@ -79,6 +81,12 @@
                 }
                 .quantity {
                     margin: 10px 0;
+                    span {
+                        font-size: .7em;
+                        .in-stock {
+                            color: green;
+                        }
+                    }
                     label {
                         display: block;
                         margin-bottom: 5px;
@@ -86,11 +94,48 @@
                     input {
                         width: 3em;
                         border: 1px solid gray;
+                        border-radius: 5px;
                         font-size: 1em;
                     }
                 }
+                .view-full-details {
+                    font-size: .6em;
+                    font-style: italic;
+                }
                 .apd-add-to-cart {
                     @include index.apd_button
+                }
+            }
+        }
+        @media screen and (max-width: 600px){
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0;
+            max-height: 60vh;
+            
+            .product-title{
+                text-align: center;
+            }
+            .apd-modal-content-container {
+                width: 100%;
+                display: block;
+                .product-gallery-section {
+                    width: 100%;
+                    display: block;
+                    .modal-image {
+                        margin: 0 50px;
+                        .main-image {
+                            width: 100%;
+                        }
+                    }
+                }
+                .modal-content {
+                    margin: 0 15px;
+                    .variation-row {
+                        text-align: center;
+                    }
                 }
             }
         }
