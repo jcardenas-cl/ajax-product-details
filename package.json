@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sass_watch": "sass --watch src/sass/apd.scss:dist/css/apd.min.css  --style compressed"
+    "sass_watch": "sass --watch src/sass/apd.scss:dist/css/apd.min.css  --style compressed",
+    "sass_compile": "sass src/sass/apd.scss:dist/css/apd.min.css  --style compressed"
   },
   "author": "Julio Cárdenas",
   "license": "ISC",
