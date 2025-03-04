@@ -55,15 +55,17 @@
                 flex: 0 0 45%;
                 .main-image {
                     width: 95%;
-                    margin-bottom: 15px;
+                    margin-bottom: 10px;
                 }
                 .modal-gallery {
                     display: flex;
                     justify-content: center;
-                    gap: 10px;
-                    margin-bottom: 20px;
+                    gap: 3px;
                     .g-item {
                         display: inline-block;
+                        width: 20px;
+                        height: 3px;
+                        background-color: rgb(99, 99, 99);
                     }
                 }
             }
@@ -77,34 +79,50 @@
                     color: index.$color_black;
                     margin: 0;
                 }
+                .price {
+                    font-size: 1.2em;
+                    font-weight: bold;
+                }
                 .variation-row {
                     margin-top: 20px;
-                    button {
-                        @include index.apd_outline_button
-                    }
-                }
-                .quantity {
-                    margin: 10px 0;
                     span {
                         font-size: .7em;
-                        .in-stock {
-                            color: green;
-                        }
                     }
-                    label {
-                        display: block;
-                        margin-bottom: 5px;
-                    }
-                    input {
-                        width: 3em;
-                        border: 1px solid gray;
-                        border-radius: 5px;
-                        font-size: 1em;
+                    button {
+                        @include index.apd_outline_button
                     }
                 }
                 .modal-options {
                     button {
                         color: black;
+                        margin: 0 2px;
+                    }
+                }
+                .cart-group {
+                    display: flex;
+                    flex-direction: column;
+                    margin-top: 10px;   
+                    .quantity {
+                        margin: 10px 0;
+                        span {
+                            font-size: .7em;
+                            .in-stock {
+                                color: green;
+                            }
+                        }
+                        label {
+                            display: block;
+                            margin-bottom: 5px;
+                        }
+                        input {
+                            width: 3em;
+                            border: 1px solid gray;
+                            border-radius: 5px;
+                            font-size: 1em;
+                        }
+                    }
+                    button {
+
                     }
                 }
                 .view-full-details {
@@ -165,6 +183,14 @@
                     margin: 0 15px;
                     .variation-row {
                         text-align: center;
+                    }
+                    .cart-group {
+                        flex-direction: row;
+                        justify-content: space-between;
+                        align-items: center;
+                        button {
+                            height: min-content;
+                        }
                     }
                 }
             }
