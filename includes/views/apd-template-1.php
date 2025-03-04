@@ -19,10 +19,11 @@
 
                     if ($gallery_images) {
                         echo '<div class="modal-gallery">';
-                        foreach ($gallery_images as $imagen_url) {
-                            echo "<div class='g-item'>&bull;</div> ";
-                        }
+                        foreach ($gallery_images as $imagen_url) { ?>
+                            <div class='g-item'></div>
+                        <?php }
                         echo '</div>';
+                        
                     }
                 ?>
             </div>
@@ -30,14 +31,14 @@
             <!-- Sección con los contenidos -->
             <div class="modal-content">
                 <div><?php echo $product->get_short_description(); ?></div>
-                <div><?php echo wc_price($product->get_price()); ?></div>
+                <div class="price"><?php echo wc_price($product->get_price()); ?></div>
                 <?php
                 $variation = get_product_variations_by_attribute($product->get_ID());
                 $variation = $variation['attributes'];
                 foreach ( $variation as $variationName => $variationValue ) {
                     ?>
                     <div class="variation-row">
-                        <span>Elige <?php echo $variationName; ?>:</span>
+                        <span><?php echo $variationName; ?>:</span>
                         <div class="modal-options">
                             <?php
                                 foreach( $variationValue as $variationLabel ) {
@@ -51,13 +52,14 @@
                     <?php
                 }
                 ?>
+                <div class="cart-group">
+                    <div class="quantity">
+                        <div><span class="in-stock"><?php _e('En stock','ajax-product-details'); ?></span></div>
+                        <input type="number" name="txt-quantity" value="1">
+                    </div>
 
-                <div class="quantity">
-                    <div><span class="in-stock"><?php _e('En stock','ajax-product-details'); ?></span></div>
-                    <input type="number" name="txt-quantity" value="1">
+                    <button class="apd-add-to-cart">Agregar al carrito</button>
                 </div>
-
-                <button class="apd-add-to-cart">Agregar al carrito</button>
                 
                 <div>
                     <a 
