@@ -1,8 +1,9 @@
 
 <div class="apd-modal apd-override">
-
-    <button class="modal-close">&times;</button>
-    <div><div class="close-handler"></div></div>
+    <div class="close-handlers-container">
+        <button class="modal-close">&times;</button>
+        <div><div class="close-handler"></div></div>
+    </div>
     
     <div class="apd-content-container">
         <h2 class="product-title"><?php echo $product->get_name(); ?></h2>

@@ -116,16 +116,25 @@
                 }
             }
         }
-        @media screen and (max-width: 600px){
-            position: fixed;
-            bottom: 0;
-            left: 0;
+    }
+    @media screen and (max-width: 600px) {
+        align-items: end;
+        .apd-modal {
+            position: relative;
             width: 100%;
             padding: 0;
             max-height: 60vh;
-            border-radius: 10px;
-            .modal-close {
-                display: none;
+            border-radius: 10px 10px 0 0;
+            .close-handlers-container {
+                position: sticky;
+                top: 0;
+                left: 0;
+                background: white;
+                height: 20px;
+                padding-top: 5px;
+                .modal-close {
+                    display: none;
+                }
             }
             .close-handler {
                 display: block;
@@ -141,6 +150,7 @@
             .apd-modal-content-container {
                 width: 100%;
                 display: block;
+                height: inherit;
                 .product-gallery-section {
                     width: 100%;
                     display: block;
