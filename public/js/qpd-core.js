@@ -94,9 +94,13 @@ class QuickProductDetails {
     }
 
     closeModal() {
-        document.querySelector('.apd-overlay').classList.add('apd-hidden')
-        document.querySelector('.apd-content-container').innerHTML = ''
-        jQuery('body').css('overflow', 'auto')
+        jQuery('.apd-modal').animate({
+            bottom: '-1000px'
+        }, 500, function() {
+            document.querySelector('.apd-overlay').classList.add('apd-hidden')
+            document.querySelector('.apd-content-container').innerHTML = ''
+            jQuery('body').css('overflow', 'auto')
+        })
     }
 
 }

@@ -33,6 +33,7 @@
         overflow: auto;
         text-align: center;
         z-index: 200;
+        transition: height 3s;
         .loading {
             display: flex;
             height: 40vh;
@@ -148,7 +149,7 @@
             position: relative;
             width: 100%;
             padding: 0;
-            max-height: 60vh;
+            max-height: 75vh;
             border-radius: 10px 10px 0 0;
             .loading {
                 height: 100px;
@@ -194,6 +195,9 @@
                 .modal-content {
                     margin: 0 15px;
                     .variation-row {
+                        text-align: center;
+                    }
+                    .quantity {
                         text-align: center;
                     }
                 }
