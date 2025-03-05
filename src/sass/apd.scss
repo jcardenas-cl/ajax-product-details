@@ -1,6 +1,5 @@
 
 @use 'index';
-
 .apd-overlay {
     position: fixed;
     top: 0;
@@ -18,6 +17,9 @@
     .close-handler {
         display: none;
         cursor: pointer;
+    }
+    .d-none {
+        display: none !important;
     }
     .apd-modal {
         position: relative;
@@ -193,14 +195,6 @@
                     margin: 0 15px;
                     .variation-row {
                         text-align: center;
-                    }
-                    .cart-group {
-                        flex-direction: row;
-                        justify-content: space-between;
-                        align-items: center;
-                        button {
-                            height: min-content;
-                        }
                     }
                 }
             }

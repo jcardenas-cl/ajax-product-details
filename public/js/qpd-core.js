@@ -47,7 +47,7 @@ class QuickProductDetails {
     }
 
     setContent( content ) {
-        document.querySelector('.apd-modal .loading').classList.add('apd-hidden')
+        document.querySelector('.apd-modal .loading').classList.add('d-none')
         document.querySelector('.apd-content-container').innerHTML = content
     }
 
@@ -61,6 +61,7 @@ class QuickProductDetails {
 
     preloadAnimation() {
         const clientWidth = document.body.clientWidth
+        document.querySelector('.apd-modal .loading').classList.remove('d-none')
         jQuery( '.apd-overlay' ).removeClass('apd-hidden')
         jQuery('body').css('overflow', 'hidden')
 
