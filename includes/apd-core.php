@@ -5,12 +5,24 @@
  * un archivo con el nombre apd-product-detail.php al interior de la carpeta apd, la cual debe estar alojada en la raíz del tema usado.
  * @since 1.0.0
  */
-add_action( 'wp_ajax_nopriv_apd_get_product', 'apd_get_product' );
-add_action( 'wp_ajax_apd_get_product', 'apd_get_product' );
+add_action( 'wp_ajax_nopriv_qpd_get_product', 'qpd_get_product' );
+add_action( 'wp_ajax_qpd_get_product', 'qpd_get_product' );
 
-function apd_get_product() {
-    $product_id = $_POST['product_id'];
-    $_product   = wc_get_product( $product_id );
+function qpd_get_product() {
+
+    if (!isset($_POST['product_id'])) {
+        wp_send_json_error('No product_id provided');
+        return;
+    }
+
+    $product_id = intval($_POST['product_id']);
+    $_product = wc_get_product($product_id);
+    
+    if (!$_product) {
+        wp_send_json_error('Product not found');
+        return;
+    }
+    
     // Para simplicidad en la vista, se separaran las variedades del producto en caso que las tenga
     if ( $_product->is_type( 'variable' ) ) {
         $variation_group 	= array();
@@ -243,6 +255,19 @@ function apd_add_to_cart() {
 add_action( 'wp_footer', function() {
     ?>
     <div class="apd-overlay apd-hidden">
+        <div class="apd-modal apd-override">
+            <div class="close-handlers-container">
+                <button class="modal-close">&times;</button>
+                <div><div class="close-handler"></div></div>
+            </div>
+
+            <div class="loading">
+                <?php _e( 'Cargando...', 'ajax-product-details' ); ?>
+            </div>
+            <div class="apd-content-container">
+                <!-- The content -->
+            </div>
+        </div>
     </div>
     <?php
 } );

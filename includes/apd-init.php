@@ -8,10 +8,12 @@ function apd_enqueue_scripts_and_styles() {
 	if ( ! wp_script_is( 'jquery' ) ) {
 		wp_enqueue_script( 'jquery' );
 	}
-
+	// Remove
 	if ( ! wp_script_is( 'lodash' ) ) {
 		wp_enqueue_script('lodash');
 	}
+	// Remove
+	/*
     wp_enqueue_script (
         'apd-core-script',
         plugin_dir_url( __FILE__ ) . '../public/js/apd-core.js',
@@ -19,6 +21,15 @@ function apd_enqueue_scripts_and_styles() {
 		time(),
 		true
     );
+	*/
+	wp_enqueue_script (
+        'qpd-core-script',
+        plugin_dir_url( __FILE__ ) . '../public/js/qpd-core.js',
+        array( 'jquery' ),
+		time(),
+		true
+    );
+	// Remove
 	wp_enqueue_script (
         'swiperjs',
         'https://unpkg.com/swiper@8/swiper-bundle.min.js',
@@ -31,16 +42,28 @@ function apd_enqueue_scripts_and_styles() {
 		'apd-core',
 		plugin_dir_url( __FILE__ ) . '../dist/css/apd.min.css'
 	);
+	// Remove
 	wp_enqueue_style (
 		'swiperjs',
 		'https://unpkg.com/swiper@8/swiper-bundle.min.css'
 	);
 
+	// Remove
+	/*
 	wp_localize_script (
 		'apd-core-script',
 		'apd_site_config',
 		array(
 			'ajaxurl'  => admin_url( 'admin-ajax.php' ),
+			'base_url' => get_site_url(),
+		)
+	);*/
+
+	wp_localize_script (
+		'qpd-core-script',
+		'qpd_site_config',
+		array(
+			'ajax_url'  => admin_url( 'admin-ajax.php' ),
 			'base_url' => get_site_url(),
 		)
 	);
