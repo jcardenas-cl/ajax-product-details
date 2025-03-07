@@ -51,7 +51,7 @@ class QuickProductDetails {
         document.querySelector('.apd-content-container').innerHTML = content
     }
 
-    addToCart( product_id, quantity, variation_id ) {
+    addToCart( product_id, quantity, variation_id = null ) {
 
     }
 

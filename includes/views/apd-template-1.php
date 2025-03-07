@@ -1,17 +1,18 @@
-<h2 class="product-title"><?php echo $product->get_name(); ?></h2>
+<h2 class="product-title"><?php echo $product->title; ?></h2>
 <div class="apd-modal-content-container">
     <!-- Sección con la galería -->
     <div class="product-gallery-section">
         <div class="modal-image">
-            <img src="<?php echo esc_url(get_product_image_url($product->get_ID())); ?>" class="main-image" alt="Imagen principal">
+            <img 
+                src="<?php echo esc_url($product->main_image); ?>"
+                class="main-image"
+                alt="Imagen principal" >
         </div>
 
         <?php
-            $gallery_images = get_product_gallery_image_url($product->get_ID());
-
-            if ($gallery_images) {
+            if (is_array($product->gallery)) {
                 echo '<div class="modal-gallery">';
-                foreach ($gallery_images as $imagen_url) { ?>
+                foreach ($product->gallery as $imagen_url) { ?>
                     <div class='g-item'></div>
                 <?php }
                 echo '</div>';
@@ -22,32 +23,41 @@
 
     <!-- Sección con los contenidos -->
     <div class="modal-content">
-        <div><?php echo $product->get_short_description(); ?></div>
-        <div class="price"><?php echo wc_price($product->get_price()); ?></div>
+        <div><?php echo $product->short_description; ?></div>
+        <div class="price">
+            <?php echo wc_price($product->price); ?></div>
+        
         <?php
-        $variation = get_product_variations_by_attribute($product->get_ID());
-        $variation = $variation['attributes'];
-        foreach ( $variation as $variationName => $variationValue ) {
-            ?>
-            <div class="variation-row">
-                <span><?php echo $variationName; ?>:</span>
-                <div class="modal-options">
-                    <?php
-                        foreach( $variationValue as $variationLabel ) {
-                            ?>
-                            <button value="<?php echo esc_attr($variationLabel); ?>"><?php echo $variationLabel; ?></button>
-                            <?php
-                        }
-                    ?>
+        $variation = $product->variations;
+        if ($variation !== false):
+            foreach ( $variation->attributes as $attribute ):
+                ?>
+                <div class="variation-row">
+                    <span><?php echo $attribute->label; ?>:</span>
+                    <div class="modal-options">
+                        <?php
+                            foreach( $attribute->options as $option ) {
+                                ?>
+                                <button 
+                                    value="<?php echo esc_attr($option->value); ?>">
+                                    <?php echo $option->label; ?></button>
+                                <?php
+                            }
+                        ?>
+                    </div>
                 </div>
-            </div>
-            <?php
-        }
+                <?php
+            endforeach;
+        endif;
         ?>
         <div class="cart-group">
             <div class="quantity">
                 <div><span class="in-stock"><?php _e('En stock','ajax-product-details'); ?></span></div>
-                <input type="number" name="txt-quantity" value="1">
+                <input 
+                    type="number"
+                    name="txt-quantity"
+                    value="1"
+                    max="2">
             </div>
 
             <button class="apd-add-to-cart">Agregar al carrito</button>
@@ -56,7 +66,7 @@
         <div>
             <a 
             class="view-full-details"
-            href="#">Ver todos los detalles</a>
+            href="<?php echo $product->permalink; ?>">Ver todos los detalles</a>
         </div>
     </div>
 </div>
