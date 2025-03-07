@@ -25,6 +25,38 @@ class QuickProductDetails {
         this.groupedCloseActions()
     }
 
+    postloadActions() {
+        const att_options = document.querySelectorAll('.qpd-attr')
+
+        if (att_options.length > 0) {
+            att_options.forEach(item => {
+                item.addEventListener('click', (evt) => {
+                    item.classList.toggle('selected')
+                })
+            })
+        }
+
+        const variationRows = document.querySelectorAll('.variation-row')
+
+        if (variationRows.length > 0) {
+            variationRows.forEach(row => {
+                const options = row.querySelectorAll('.qpd-attr')
+                
+                options.forEach(option => {
+                    option.addEventListener('click', (evt) => {
+                        // Remover 'selected' de todos los botones del mismo atributo
+                        options.forEach(opt => opt.classList.remove('selected'))
+                        // Agregar 'selected' solo al botón clickeado
+                        option.classList.add('selected')
+                        
+                        // Opcional: Verificar si todos los atributos están seleccionados
+                        this.checkVariationSelection()
+                    })
+                })
+            })
+        }
+    }
+
     async getProductContent(product_id) {
         if (!product_id || isNaN(product_id) || product_id <= 0) return false
 
@@ -49,6 +81,7 @@ class QuickProductDetails {
     setContent( content ) {
         document.querySelector('.apd-modal .loading').classList.add('d-none')
         document.querySelector('.apd-content-container').innerHTML = content
+        this.postloadActions()
     }
 
     addToCart( product_id, quantity, variation_id = null ) {
@@ -101,6 +134,30 @@ class QuickProductDetails {
             document.querySelector('.apd-content-container').innerHTML = ''
             jQuery('body').css('overflow', 'auto')
         })
+    }
+
+    // Método adicional para verificar selecciones completas
+    checkVariationSelection() {
+        const variationRows = document.querySelectorAll('.variation-row')
+        const selections = {}
+        let allSelected = true
+
+        variationRows.forEach(row => {
+            const attributeName = row.querySelector('span').textContent.replace(':', '')
+            const selectedOption = row.querySelector('.qpd-attr.selected')
+            
+            if (selectedOption) {
+                selections[attributeName] = selectedOption.value
+            } else {
+                allSelected = false
+            }
+        })
+
+        if (allSelected) {
+            console.log('Selecciones completas:', selections)
+            // Aquí puedes llamar a otro método para manejar la variación seleccionada
+            // this.variationSelection(selections)
+        }
     }
 
 }

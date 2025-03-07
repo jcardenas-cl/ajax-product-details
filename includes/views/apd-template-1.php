@@ -39,6 +39,7 @@
                             foreach( $attribute->options as $option ) {
                                 ?>
                                 <button 
+                                    class="atr-<?=$attribute->name;?> qpd-attr"
                                     value="<?php echo esc_attr($option->value); ?>">
                                     <?php echo $option->label; ?></button>
                                 <?php

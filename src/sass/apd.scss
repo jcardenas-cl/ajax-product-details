@@ -104,6 +104,10 @@
                     button {
                         color: black;
                         margin: 0 2px;
+                        &.selected {
+                            background-color: black;
+                            color: #fff;
+                        }
                     }
                 }
                 .cart-group {
