@@ -116,34 +116,42 @@ class QuickProductDetails {
         const modal = document.querySelector('.apd-modal');
         let startY = 0;
         let currentY = 0;
+        let isDragging = false;
 
         const handleTouchStart = (e) => {
             startY = e.touches[0].clientY;
-            modal.style.transition = 'none'; // Desactivar transiciones durante el arrastre
+            isDragging = true;
+            modal.style.transition = 'none';
         };
 
         const handleTouchMove = (e) => {
+            if (!isDragging) return;
+            
             currentY = e.touches[0].clientY;
             const diffY = currentY - startY;
             
-            if (diffY > 0) { // Solo permitir deslizamiento hacia abajo
+            if (diffY > 0) {
                 e.preventDefault();
                 modal.style.transform = `translateY(${diffY}px)`;
             }
         };
 
         const handleTouchEnd = (e) => {
+            if (!isDragging) return;
+            
             const diffY = currentY - startY;
             modal.style.transition = 'transform 0.3s ease-out';
+            isDragging = false;
 
-            if (diffY > 100) { // Si el deslizamiento es mayor a 100px, cerrar
+            if (diffY > 100) {
+                e.preventDefault();
+                e.stopPropagation();
                 modal.style.transform = 'translateY(100%)';
                 setTimeout(() => {
-                    this.closeModal();
-                    modal.style.transform = ''; // Resetear transform
+                    this.closeEffectMobile();
                 }, 300);
             } else {
-                modal.style.transform = ''; // Volver a la posición original
+                modal.style.transform = '';
             }
         };
 
@@ -154,18 +162,24 @@ class QuickProductDetails {
 
     groupedCloseActions() {
         const overlay = document.querySelector('.apd-overlay');
-        const modal = document.querySelector('.apd-modal');
+        const closeBtn = document.querySelector('.modal-close');
+        const handler = document.querySelector('.close-handler');
 
-        overlay.addEventListener( 'click', (e) => {
-            if ( e.target === overlay)
-            this.closeModal()
-        })
-        document.querySelector('.modal-close').addEventListener( 'click', () => {
-            this.closeModal()
-        })
-        document.querySelector('.close-handler').addEventListener( 'click', () => {
-            this.closeModal()
-        })
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                this.closeModal();
+            }
+        });
+
+        closeBtn.addEventListener('click', () => {
+            this.closeModal();
+        });
+
+        if (window.innerWidth > 576) {
+            handler.addEventListener('click', () => {
+                this.closeModal();
+            });
+        }
     }
 
     closeModal() {
@@ -178,7 +192,6 @@ class QuickProductDetails {
         }
     }
 
-    // Método adicional para verificar selecciones completas
     checkVariationSelection() {
         const variationRows = document.querySelectorAll('.variation-row')
         const selections = {}
@@ -197,8 +210,6 @@ class QuickProductDetails {
 
         if (allSelected) {
             console.log('Selecciones completas:', selections)
-            // Aquí puedes llamar a otro método para manejar la variación seleccionada
-            // this.variationSelection(selections)
         }
     }
 
