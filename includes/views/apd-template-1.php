@@ -3,22 +3,32 @@
     <!-- Sección con la galería -->
     <div class="product-gallery-section">
         <div class="modal-image">
-            <img 
-                src="<?php echo esc_url($product->main_image); ?>"
-                class="main-image"
-                alt="Imagen principal" >
-        </div>
-
-        <?php
-            if (is_array($product->gallery)) {
-                echo '<div class="modal-gallery">';
-                foreach ($product->gallery as $imagen_url) { ?>
-                    <div class='g-item'></div>
-                <?php }
-                echo '</div>';
+            <div class="gallery-slider">
+                <img 
+                    src="<?php echo esc_url($product->main_image); ?>"
+                    class="slide active"
+                    alt="Imagen principal">
                 
-            }
-        ?>
+                <?php if (is_array($product->gallery)): 
+                    foreach ($product->gallery as $imagen_url): ?>
+                        <img 
+                            src="<?php echo esc_url($imagen_url); ?>"
+                            class="slide"
+                            alt="Imagen de galería">
+                    <?php 
+                    endforeach;
+                endif; ?>
+            </div>
+        </div>
+        
+        <?php if (is_array($product->gallery)): ?>
+            <div class="gallery-nav">
+                <span class="nav-dot active"></span>
+                <?php for($i = 0; $i < count($product->gallery); $i++): ?>
+                    <span class="nav-dot"></span>
+                <?php endfor; ?>
+            </div>
+        <?php endif; ?>
     </div>
 
     <!-- Sección con los contenidos -->

@@ -79,36 +79,37 @@ class QuickProductDetails {
         }
     }
 
-    setContent( content ) {
-        document.querySelector('.apd-modal .loading').classList.add('d-none')
-        document.querySelector('.apd-content-container').innerHTML = content
-        this.postloadActions()
+    setContent(content) {
+        document.querySelector('.apd-modal .loading').classList.add('d-none');
+        document.querySelector('.apd-content-container').innerHTML = content;
+        this.postloadActions();
+        this.initGallery(); // Agregar esta línea
     }
 
-    addToCart( product_id, quantity, variation_id = null ) {
+    addToCart(product_id, quantity, variation_id = null) {
 
     }
 
-    variationSelection( variation_id ) {
+    variationSelection(variation_id) {
 
     }
 
     preloadAnimation() {
         const clientWidth = document.body.clientWidth
         document.querySelector('.apd-modal .loading').classList.remove('d-none')
-        jQuery( '.apd-overlay' ).removeClass('apd-hidden')
+        jQuery('.apd-overlay').removeClass('apd-hidden')
         jQuery('body').css('overflow', 'hidden')
 
-        if ( clientWidth <= 600 ) {
-            jQuery( '.apd-modal' ).css('bottom', '-100px')
-            jQuery( '.apd-modal' ).animate({
+        if (clientWidth <= 600) {
+            jQuery('.apd-modal').css('bottom', '-100px')
+            jQuery('.apd-modal').animate({
                 bottom: '0px'
             }, 200)
         }
     }
 
     postloadAnimation() {
-        
+
     }
 
     slideToClose() {
@@ -126,10 +127,10 @@ class QuickProductDetails {
 
         const handleTouchMove = (e) => {
             if (!isDragging) return;
-            
+
             currentY = e.touches[0].clientY;
             const diffY = currentY - startY;
-            
+
             if (diffY > 0) {
                 e.preventDefault();
                 modal.style.transform = `translateY(${diffY}px)`;
@@ -138,7 +139,7 @@ class QuickProductDetails {
 
         const handleTouchEnd = (e) => {
             if (!isDragging) return;
-            
+
             const diffY = currentY - startY;
             modal.style.transition = 'transform 0.3s ease-out';
             isDragging = false;
@@ -200,7 +201,7 @@ class QuickProductDetails {
         variationRows.forEach(row => {
             const attributeName = row.querySelector('span').textContent.replace(':', '')
             const selectedOption = row.querySelector('.qpd-attr.selected')
-            
+
             if (selectedOption) {
                 selections[attributeName] = selectedOption.value
             } else {
@@ -216,7 +217,7 @@ class QuickProductDetails {
     closeEffectMobile() {
         jQuery('.apd-modal').animate({
             bottom: '-1000px'
-        }, 500, function() {
+        }, 500, function () {
             document.querySelector('.apd-overlay').classList.add('apd-hidden')
             document.querySelector('.apd-content-container').innerHTML = ''
             jQuery('body').css('overflow', 'auto')
@@ -224,6 +225,53 @@ class QuickProductDetails {
         })
     }
 
+    initGallery() {
+        const slider = document.querySelector('.gallery-slider');
+        const slides = slider.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.nav-dot');
+        let currentSlide = 0;
+
+        // Función para cambiar slide
+        const goToSlide = (index) => {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentSlide = index;
+        };
+
+        // Eventos para los dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => goToSlide(index));
+        });
+
+        // Soporte para gestos táctiles
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        slider.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+
+        slider.addEventListener('touchmove', (e) => {
+            touchEndX = e.touches[0].clientX;
+        }, { passive: true });
+
+        slider.addEventListener('touchend', () => {
+            const diffX = touchStartX - touchEndX;
+
+            if (Math.abs(diffX) > 50) { // Umbral mínimo para cambio
+                if (diffX > 0 && currentSlide < slides.length - 1) {
+                    // Deslizar a la derecha
+                    goToSlide(currentSlide + 1);
+                } else if (diffX < 0 && currentSlide > 0) {
+                    // Deslizar a la izquierda
+                    goToSlide(currentSlide - 1);
+                }
+            }
+        });
+    }
 }
 
 const QPD = new QuickProductDetails()
