@@ -206,6 +206,7 @@
                 background: white;
                 height: 20px;
                 padding-top: 5px;
+                z-index: 10; // Agregar z-index
                 .modal-close {
                     display: none;
                 }
@@ -225,9 +226,12 @@
                 width: 100%;
                 display: block;
                 height: inherit;
+                margin-top: 10px; // Agregar margen superior
                 .product-gallery-section {
                     width: 100%;
                     display: block;
+                    position: relative; // Agregar position relative
+                    z-index: 1; // z-index menor que el close-handler
                     .modal-image {
                         .main-image {
                             width: 100%;
