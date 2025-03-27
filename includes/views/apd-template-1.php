@@ -25,7 +25,7 @@
     <div class="modal-content">
         <div><?php echo $product->short_description; ?></div>
         <div class="price">
-            <?php echo wc_price($product->price); ?></div>
+            <?php echo $product->price_html; ?></div>
         
         <?php
         $variation = $product->variations;

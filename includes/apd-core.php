@@ -388,6 +388,7 @@ function get_product_data( $product_id ) {
     $theProduct->ID                 = $WcProduct->get_ID();
     $theProduct->title              = $WcProduct->get_title();
     $theProduct->price              = $WcProduct->get_price();
+    $theProduct->price_html         = $WcProduct->get_price_html();
     $theProduct->regular_price      = $WcProduct->get_regular_price();
     $theProduct->sale_price         = $WcProduct->get_sale_price();
     $theProduct->type               = $WcProduct->get_type();

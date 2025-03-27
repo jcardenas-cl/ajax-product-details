@@ -127,13 +127,13 @@ class QuickProductDetails {
     }
 
     closeModal() {
-        jQuery('.apd-modal').animate({
-            bottom: '-1000px'
-        }, 500, function() {
+        if (window.innerWidth <= 576) {
+            this.closeEffectMobile()
+        } else {
             document.querySelector('.apd-overlay').classList.add('apd-hidden')
             document.querySelector('.apd-content-container').innerHTML = ''
             jQuery('body').css('overflow', 'auto')
-        })
+        }
     }
 
     // Método adicional para verificar selecciones completas
@@ -158,6 +158,17 @@ class QuickProductDetails {
             // Aquí puedes llamar a otro método para manejar la variación seleccionada
             // this.variationSelection(selections)
         }
+    }
+
+    closeEffectMobile() {
+        jQuery('.apd-modal').animate({
+            bottom: '-1000px'
+        }, 500, function() {
+            document.querySelector('.apd-overlay').classList.add('apd-hidden')
+            document.querySelector('.apd-content-container').innerHTML = ''
+            jQuery('body').css('overflow', 'auto')
+            document.querySelector('.apd-modal').removeAttribute('style')
+        })
     }
 
 }
