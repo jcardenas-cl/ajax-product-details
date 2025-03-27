@@ -23,6 +23,7 @@ class QuickProductDetails {
         ))
 
         this.groupedCloseActions()
+        this.slideToClose()
     }
 
     postloadActions() {
@@ -108,6 +109,47 @@ class QuickProductDetails {
 
     postloadAnimation() {
         
+    }
+
+    slideToClose() {
+        const handler = document.querySelector('.close-handler');
+        const modal = document.querySelector('.apd-modal');
+        let startY = 0;
+        let currentY = 0;
+
+        const handleTouchStart = (e) => {
+            startY = e.touches[0].clientY;
+            modal.style.transition = 'none'; // Desactivar transiciones durante el arrastre
+        };
+
+        const handleTouchMove = (e) => {
+            currentY = e.touches[0].clientY;
+            const diffY = currentY - startY;
+            
+            if (diffY > 0) { // Solo permitir deslizamiento hacia abajo
+                e.preventDefault();
+                modal.style.transform = `translateY(${diffY}px)`;
+            }
+        };
+
+        const handleTouchEnd = (e) => {
+            const diffY = currentY - startY;
+            modal.style.transition = 'transform 0.3s ease-out';
+
+            if (diffY > 100) { // Si el deslizamiento es mayor a 100px, cerrar
+                modal.style.transform = 'translateY(100%)';
+                setTimeout(() => {
+                    this.closeModal();
+                    modal.style.transform = ''; // Resetear transform
+                }, 300);
+            } else {
+                modal.style.transform = ''; // Volver a la posición original
+            }
+        };
+
+        handler.addEventListener('touchstart', handleTouchStart, { passive: false });
+        handler.addEventListener('touchmove', handleTouchMove, { passive: false });
+        handler.addEventListener('touchend', handleTouchEnd);
     }
 
     groupedCloseActions() {

@@ -152,6 +152,8 @@
             padding: 0;
             max-height: 75vh;
             border-radius: 10px 10px 0 0;
+            transform: translateY(0);
+            will-change: transform;
             .loading {
                 height: 100px;
                 justify-content: center;
