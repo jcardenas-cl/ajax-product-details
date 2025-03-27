@@ -243,7 +243,9 @@ class QuickProductDetails {
         // Función para cambiar slide
         const goToSlide = (index) => {
             currentSlide = index;
-            currentTranslate = -window.innerWidth * currentSlide;
+            // Usar el ancho del contenedor en lugar del ancho de la ventana
+            const containerWidth = slider.parentElement.offsetWidth;
+            currentTranslate = -containerWidth * currentSlide;
             prevTranslate = currentTranslate;
             
             setSliderPosition(currentTranslate);
