@@ -79,19 +79,20 @@
                     position: relative;
                     overflow: hidden;
                     margin-bottom: 10px; // Reducido de 20px a 10px
-
+                    width: 100%; // Asegurar ancho completo
                     .gallery-slider {
                         display: flex;
                         transition: transform 0.3s ease-in-out;
-                        
+                        width: 100%;
+                        align-items: flex-start;
                         .slide {
-                            min-width: 100%;
-                            width: 100%;
-                            display: none;
-                            
-                            &.active {
-                                display: block;
-                            }
+                            width: 90%;
+                            margin: 0 5%;
+                            flex-shrink: 0; // Importante para el deslizamiento
+                            opacity: 1;
+                            transition: opacity 0.3s ease;
+                            display: block; // Asegurar que la imagen es block
+                            object-fit: contain; // Mantener proporción de imagen
                         }
                     }
                 }
@@ -228,7 +229,6 @@
                     width: 100%;
                     display: block;
                     .modal-image {
-                        margin: 0 50px;
                         .main-image {
                             width: 100%;
                         }
@@ -245,6 +245,21 @@
                     }
                     .quantity {
                         text-align: center;
+                    }
+                }
+            }
+        }
+        .apd-overlay .apd-modal .apd-modal-content-container {
+            .product-gallery-section {
+                .modal-image {
+                    margin: 0; // Eliminar márgenes en móvil
+                    width: 100%;
+                    
+                    .gallery-slider {
+                        .slide {
+                            padding: 0 15px; // Agregar padding interno en lugar de márgenes
+                            box-sizing: border-box; // Asegurar que el padding no afecte el ancho
+                        }
                     }
                 }
             }

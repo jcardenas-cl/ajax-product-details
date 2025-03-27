@@ -230,47 +230,71 @@ class QuickProductDetails {
         const slides = slider.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.nav-dot');
         let currentSlide = 0;
+        let isDragging = false;
+        let startPos = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+
+        // Función para actualizar la posición del slider
+        const setSliderPosition = (position) => {
+            slider.style.transform = `translateX(${position}px)`;
+        };
 
         // Función para cambiar slide
         const goToSlide = (index) => {
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-
-            slides[index].classList.add('active');
-            dots[index].classList.add('active');
             currentSlide = index;
+            currentTranslate = -window.innerWidth * currentSlide;
+            prevTranslate = currentTranslate;
+            
+            setSliderPosition(currentTranslate);
+            
+            // Actualizar dots
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
         };
+
+        // Eventos táctiles
+        slider.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startPos = e.touches[0].clientX;
+            slider.style.transition = 'none';
+        }, {passive: true});
+
+        slider.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            
+            const currentPosition = e.touches[0].clientX;
+            const diff = currentPosition - startPos;
+            currentTranslate = prevTranslate + diff;
+            
+            setSliderPosition(currentTranslate);
+        }, {passive: true});
+
+        slider.addEventListener('touchend', () => {
+            isDragging = false;
+            slider.style.transition = 'transform 0.3s ease-in-out';
+            
+            // Calcular el índice más cercano basado en el deslizamiento
+            const movedBy = currentTranslate - prevTranslate;
+            
+            if (Math.abs(movedBy) > 100) {
+                if (movedBy < 0 && currentSlide < slides.length - 1) {
+                    currentSlide += 1;
+                } else if (movedBy > 0 && currentSlide > 0) {
+                    currentSlide -= 1;
+                }
+            }
+            
+            goToSlide(currentSlide);
+        });
 
         // Eventos para los dots
         dots.forEach((dot, index) => {
             dot.addEventListener('click', () => goToSlide(index));
         });
 
-        // Soporte para gestos táctiles
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        slider.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
-        }, { passive: true });
-
-        slider.addEventListener('touchmove', (e) => {
-            touchEndX = e.touches[0].clientX;
-        }, { passive: true });
-
-        slider.addEventListener('touchend', () => {
-            const diffX = touchStartX - touchEndX;
-
-            if (Math.abs(diffX) > 50) { // Umbral mínimo para cambio
-                if (diffX > 0 && currentSlide < slides.length - 1) {
-                    // Deslizar a la derecha
-                    goToSlide(currentSlide + 1);
-                } else if (diffX < 0 && currentSlide > 0) {
-                    // Deslizar a la izquierda
-                    goToSlide(currentSlide - 1);
-                }
-            }
-        });
+        // Prevenir arrastre de imágenes
+        slider.addEventListener('dragstart', (e) => e.preventDefault());
     }
 }
 
