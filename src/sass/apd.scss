@@ -86,8 +86,8 @@
                         width: 100%;
                         align-items: flex-start;
                         .slide {
-                            width: 90%;
-                            margin: 0 5%;
+                            width: 80%;
+                            margin: 0 10%;
                             flex-shrink: 0; // Importante para el deslizamiento
                             opacity: 1;
                             transition: opacity 0.3s ease;
@@ -106,7 +106,7 @@
 
                     .nav-dot {
                         width: 25px;
-                        height: 3px;
+                        height: 5px;
                         background: rgba(0,0,0,0.2); // Cambiado para mejor visibilidad
                         cursor: pointer;
                         transition: all 0.3s ease;
