@@ -56,7 +56,20 @@ class QuickProductDetails {
             const variationId = addToCartBtn.getAttribute('data-variation-id')
 
             if (productId) {
-                await this.addToCart(productId, quantity, variationId);
+                document.querySelector('.apd-add-to-cart').setAttribute('disabled', 'disabled')
+                document.querySelector('.apd-add-to-cart').textContent = 'Agregando...'
+                const response = await this.addToCart(productId, quantity, variationId);
+                if (response) {
+                    document.querySelector('.apd-add-to-cart').textContent = 'Agregado con éxito'
+                    document.querySelector('.apd-add-to-cart').removeAttribute('disabled')
+                    setTimeout(() => {
+                        document.querySelector('.apd-add-to-cart').textContent = 'Agregar al carrito'
+                    }, 1500);
+                } else {
+                    // Aquí puedes agregar el código para mostrar un mensaje de error
+                    document.querySelector('.apd-add-to-cart').removeAttribute('disabled')
+                    document.querySelector('.apd-add-to-cart').textContent = 'Error al agregar'
+                }
             }
         })
     }
@@ -158,6 +171,9 @@ class QuickProductDetails {
         })
 
         const response = await promise.json()
+        if (response.status == 'OK') return true
+
+        return false
     }
 
     preloadAnimation() {

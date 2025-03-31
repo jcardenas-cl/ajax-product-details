@@ -220,7 +220,7 @@ add_action( 'wp_ajax_qpd_add_to_cart', 'apd_add_to_cart' );
 function apd_add_to_cart() {
 	header('Content-type: text/json');
 	$product_id 		= $_POST['product_id'];
-	$variation_id		= ($_POST['variation_id'] > 0 ) ? $_POST['variation_id'] : null;
+	$variation_id		= ($_POST['variation_id'] > 0) ? $_POST['variation_id'] : null;
 	$quantity			= $_POST['quantity'];
 	$passed_validation	= apply_filters( 'woocommerce_add_to_cart_validation', true, $product_id, $quantity );
 	$product_status    	= get_post_status( $product_id );
