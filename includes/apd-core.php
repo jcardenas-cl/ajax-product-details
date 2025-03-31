@@ -215,8 +215,8 @@ function apd_add_quick_view_button() {
 /**
  * Metodo que permite agregar un producto al carrito de manera asincrona
  */
-add_action( 'wp_ajax_nopriv_apd_add_to_cart', 'apd_add_to_cart' );
-add_action( 'wp_ajax_apd_add_to_cart', 'apd_add_to_cart' );
+add_action( 'wp_ajax_nopriv_qpd_add_to_cart', 'apd_add_to_cart' );
+add_action( 'wp_ajax_qpd_add_to_cart', 'apd_add_to_cart' );
 function apd_add_to_cart() {
 	header('Content-type: text/json');
 	$product_id 		= $_POST['product_id'];
@@ -443,9 +443,10 @@ function get_product_data($product_id) {
 
     // Variaciones
     $theProduct->variations = false;
-    $theProduct->available_variations = $WcProduct->get_available_variations();
+    $theProduct->available_variations = false;
 
     if ($WcProduct->is_type('variable')) {
+        $theProduct->available_variations = $WcProduct->get_available_variations();
         $variations_data = new stdClass();
         $variations_data->attributes = [];
         $variations_data->variation_map = [];

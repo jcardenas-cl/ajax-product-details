@@ -43,8 +43,22 @@ class QuickProductDetails {
             })
         }
 
-        // Inicializar el slider de la galería
         this.initGallery()
+        this.triggerAddToCart()
+    }
+
+    triggerAddToCart() {
+        const addToCartBtn = document.querySelector('.apd-add-to-cart');
+        addToCartBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const productId = addToCartBtn.getAttribute('data-product-id')
+            const quantity = document.querySelector('.qpd-quantity').value || 1;
+            const variationId = addToCartBtn.getAttribute('data-variation-id')
+
+            if (productId) {
+                await this.addToCart(productId, quantity, variationId);
+            }
+        })
     }
 
     checkVariationSelection() {
@@ -82,9 +96,11 @@ class QuickProductDetails {
                 if (matchingVariation.is_in_stock) {
                     document.querySelector('.in-stock').textContent = 'En stock'
                     document.querySelector('.apd-add-to-cart').removeAttribute('disabled')
+                    document.querySelector('.apd-add-to-cart').textContent = 'Agregar al carrito'
                 } else {
                     document.querySelector('.in-stock').textContent = 'Sin stock'
                     document.querySelector('.apd-add-to-cart').setAttribute('disabled', 'disabled')
+                    document.querySelector('.apd-add-to-cart').textContent = 'Sin stock'
                 }
 
                 // Actualizar descripción si existe
@@ -130,12 +146,18 @@ class QuickProductDetails {
         this.postloadActions();
     }
 
-    addToCart(product_id, quantity, variation_id = null) {
+    async addToCart(product_id, quantity, variation_id = null) {
+        const formData = new FormData();
+        formData.append('action', 'qpd_add_to_cart');
+        formData.append('product_id', product_id);
+        formData.append('quantity', quantity);
+        formData.append('variation_id', variation_id);
+        const promise = await fetch(qpd_site_config.ajax_url, {
+            method: 'POST',
+            body: formData,
+        })
 
-    }
-
-    variationSelection(variation_id) {
-
+        const response = await promise.json()
     }
 
     preloadAnimation() {
@@ -150,10 +172,6 @@ class QuickProductDetails {
                 bottom: '0px'
             }, 200)
         }
-    }
-
-    postloadAnimation() {
-
     }
 
     slideToClose() {

@@ -68,11 +68,14 @@
                 <div><span class="in-stock"><?php _e('En stock','ajax-product-details'); ?></span></div>
                 <input 
                     type="number"
+                    class="qpd-quantity"
                     name="txt-quantity"
                     value="1"
                     max="2">
             </div>
-            <button class="apd-add-to-cart">Agregar al carrito</button>
+            <button 
+            data-product-id="<?php echo $product->ID; ?>"
+            class="apd-add-to-cart">Agregar al carrito</button>
             <input type="hidden" name="variation-map" id="variation-map" value='<?php echo wp_json_encode($product->available_variations); ?>'>
         </div>
         
