@@ -27,34 +27,74 @@ class QuickProductDetails {
     }
 
     postloadActions() {
-        const att_options = document.querySelectorAll('.qpd-attr')
-
-        if (att_options.length > 0) {
-            att_options.forEach(item => {
-                item.addEventListener('click', (evt) => {
-                    item.classList.toggle('selected')
-                })
-            })
-        }
-
+        // Agregar evento de clic a los botones de variación
         const variationRows = document.querySelectorAll('.variation-row')
-
         if (variationRows.length > 0) {
             variationRows.forEach(row => {
                 const options = row.querySelectorAll('.qpd-attr')
                 
                 options.forEach(option => {
                     option.addEventListener('click', (evt) => {
-                        // Remover 'selected' de todos los botones del mismo atributo
                         options.forEach(opt => opt.classList.remove('selected'))
-                        // Agregar 'selected' solo al botón clickeado
                         option.classList.add('selected')
-                        
-                        // Opcional: Verificar si todos los atributos están seleccionados
                         this.checkVariationSelection()
                     })
                 })
             })
+        }
+
+        // Inicializar el slider de la galería
+        this.initGallery()
+    }
+
+    checkVariationSelection() {
+        const selections = {};
+        const variationRows = document.querySelectorAll('.variation-row');
+        let allSelected = true;
+
+        // Recolectar las selecciones del usuario
+        variationRows.forEach(row => {
+            const selectedOption = row.querySelector('.qpd-attr.selected');
+            if (selectedOption) {
+                const attributeName = selectedOption.getAttribute('atr-name');
+                selections[attributeName] = selectedOption.value;
+            } else {
+                allSelected = false;
+            }
+        });
+
+        if (allSelected) {
+            // Obtener el JSON de variaciones generado por WooCommerce
+            const variationData = JSON.parse(document.getElementById('variation-map').value);
+
+            // Buscar la variación que coincida con las selecciones
+            const matchingVariation = variationData.find(variation => {
+                return Object.entries(variation.attributes).every(([key, value]) => {
+                    return selections[key] === value;
+                });
+            });
+
+            if (matchingVariation) {
+                // Actualizar precio
+                document.querySelector('.price').innerHTML = matchingVariation.price_html;
+
+                // Actualizar stock
+                document.querySelector('.in-stock').textContent = 
+                    matchingVariation.is_in_stock ? 'En stock' : 'Sin stock';
+
+                // Actualizar descripción si existe
+                if (matchingVariation.variation_description) {
+                    document.querySelector('.variation-description').innerHTML = matchingVariation.variation_description;
+                }
+
+                // Actualizar imagen si existe
+                if (matchingVariation.image && matchingVariation.image.src) {
+                    document.querySelector('.product-gallery img.active').src = matchingVariation.image.src;
+                }
+
+                // Guardar el ID de la variación seleccionada para agregar al carrito
+                document.querySelector('.apd-add-to-cart').setAttribute('data-variation-id', matchingVariation.variation_id);
+            }
         }
     }
 
@@ -83,7 +123,6 @@ class QuickProductDetails {
         document.querySelector('.apd-modal .loading').classList.add('d-none');
         document.querySelector('.apd-content-container').innerHTML = content;
         this.postloadActions();
-        this.initGallery(); // Agregar esta línea
     }
 
     addToCart(product_id, quantity, variation_id = null) {
@@ -190,27 +229,6 @@ class QuickProductDetails {
             document.querySelector('.apd-overlay').classList.add('apd-hidden')
             document.querySelector('.apd-content-container').innerHTML = ''
             jQuery('body').css('overflow', 'auto')
-        }
-    }
-
-    checkVariationSelection() {
-        const variationRows = document.querySelectorAll('.variation-row')
-        const selections = {}
-        let allSelected = true
-
-        variationRows.forEach(row => {
-            const attributeName = row.querySelector('span').textContent.replace(':', '')
-            const selectedOption = row.querySelector('.qpd-attr.selected')
-
-            if (selectedOption) {
-                selections[attributeName] = selectedOption.value
-            } else {
-                allSelected = false
-            }
-        })
-
-        if (allSelected) {
-            console.log('Selecciones completas:', selections)
         }
     }
 

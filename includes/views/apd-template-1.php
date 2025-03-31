@@ -50,8 +50,9 @@
                                 ?>
                                 <button 
                                     class="atr-<?=$attribute->name;?> qpd-attr"
-                                    value="<?php echo esc_attr($option->value); ?>">
-                                    <?php echo $option->label; ?></button>
+                                    atr-name="<?php echo esc_attr($attribute->name); ?>"
+                                    value="<?php echo esc_attr(trim($option->value)); ?>">
+                                    <?php echo trim($option->label); ?></button>
                                 <?php
                             }
                         ?>
@@ -61,6 +62,7 @@
             endforeach;
         endif;
         ?>
+        <div class="variation-description"></div>
         <div class="cart-group">
             <div class="quantity">
                 <div><span class="in-stock"><?php _e('En stock','ajax-product-details'); ?></span></div>
@@ -70,8 +72,8 @@
                     value="1"
                     max="2">
             </div>
-
             <button class="apd-add-to-cart">Agregar al carrito</button>
+            <input type="hidden" name="variation-map" id="variation-map" value='<?php echo wp_json_encode($product->available_variations); ?>'>
         </div>
         
         <div>

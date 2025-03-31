@@ -379,127 +379,113 @@ function get_product_variations_by_attribute($product_id) {
     ];
 }
 
-function get_product_data( $product_id ) {
-    if ( !$product_id or is_nan($product_id) ) return;
+function get_product_data($product_id) {
+    if (!$product_id || !is_numeric($product_id)) return false;
+    
     $WcProduct = wc_get_product($product_id);
-    if ( is_null($WcProduct) or $WcProduct === false ) return;
+    if (!$WcProduct) return false;
 
-    $theProduct                     = new stdClass();
-    $theProduct->ID                 = $WcProduct->get_ID();
-    $theProduct->title              = $WcProduct->get_title();
-    $theProduct->price              = $WcProduct->get_price();
-    $theProduct->price_html         = $WcProduct->get_price_html();
-    $theProduct->regular_price      = $WcProduct->get_regular_price();
-    $theProduct->sale_price         = $WcProduct->get_sale_price();
-    $theProduct->type               = $WcProduct->get_type();
-    $theProduct->permalink          = $WcProduct->get_permalink();
-    $theProduct->stock_status       = $WcProduct->get_stock_status();
-    $theProduct->description        = $WcProduct->get_description();
-    $theProduct->short_description  = $WcProduct->get_short_description();
-    $theProduct->main_image         = wc_placeholder_img_src();
-    $theProduct->gallery            = false;
-    $theProduct->variations         = false;
-    $theProduct->sku                = $WcProduct->get_sku();
-    $theProduct->stock_quantity     = $WcProduct->get_stock_quantity();
-    $theProduct->categories         = wp_get_post_terms($product_id, 'product_cat', array('fields' => 'names'));
-    $theProduct->tags               = wp_get_post_terms($product_id, 'product_tag', array('fields' => 'names'));
-    $theProduct->weight             = $WcProduct->get_weight();
-    $theProduct->dimensions         = array(
-        'length'    => $WcProduct->get_length(),
-        'width'     => $WcProduct->get_width(),
-        'height'    => $WcProduct->get_height()
-    );
-    $theProduct->tax_status         = $WcProduct->get_tax_status();
-    $theProduct->tax_class          = $WcProduct->get_tax_class();
-    $theProduct->purchase_note      = $WcProduct->get_purchase_note();
-    $theProduct->featured           = $WcProduct->is_featured();
+    // Datos básicos del producto
+    $theProduct = new stdClass();
+    $theProduct->ID = $WcProduct->get_ID();
+    $theProduct->title = $WcProduct->get_title();
+    $theProduct->type = $WcProduct->get_type();
+    
+    // Precios
+    $theProduct->price = $WcProduct->get_price();
+    $theProduct->price_html = $WcProduct->get_price_html();
+    $theProduct->regular_price = $WcProduct->get_regular_price();
+    $theProduct->sale_price = $WcProduct->get_sale_price();
+    
+    // Stock e información general
+    $theProduct->sku = $WcProduct->get_sku();
+    $theProduct->stock_status = $WcProduct->get_stock_status();
+    $theProduct->stock_quantity = $WcProduct->get_stock_quantity();
+    $theProduct->permalink = $WcProduct->get_permalink();
+    
+    // Contenido
+    $theProduct->description = $WcProduct->get_description();
+    $theProduct->short_description = $WcProduct->get_short_description();
+    $theProduct->purchase_note = $WcProduct->get_purchase_note();
+    
+    // Taxonomías
+    $theProduct->categories = wp_get_post_terms($product_id, 'product_cat', ['fields' => 'names']);
+    $theProduct->tags = wp_get_post_terms($product_id, 'product_tag', ['fields' => 'names']);
+    
+    // Especificaciones
+    $theProduct->weight = $WcProduct->get_weight();
+    $theProduct->dimensions = [
+        'length' => $WcProduct->get_length(),
+        'width' => $WcProduct->get_width(),
+        'height' => $WcProduct->get_height()
+    ];
+    
+    // Impuestos
+    $theProduct->tax_status = $WcProduct->get_tax_status();
+    $theProduct->tax_class = $WcProduct->get_tax_class();
+    
+    // Estado
+    $theProduct->featured = $WcProduct->is_featured();
 
-    // Main image
+    // Imágenes
+    $theProduct->main_image = wc_placeholder_img_src();
     $image_id = $WcProduct->get_image_id();
     if ($image_id) {
-        // Si existe una imagen, obtenemos la URL
         $theProduct->main_image = wp_get_attachment_url($image_id);
     }
     
-    // Gallery
+    // Galería
+    $theProduct->gallery = false;
     $gallery_image_ids = $WcProduct->get_gallery_image_ids();
     if (!empty($gallery_image_ids)) {
-        $gallery_images = array_map('wp_get_attachment_url', $gallery_image_ids);
-        $theProduct->gallery = $gallery_images;
+        $theProduct->gallery = array_map('wp_get_attachment_url', $gallery_image_ids);
     }
 
-    // Variations
+    // Variaciones
+    $theProduct->variations = false;
+    $theProduct->available_variations = $WcProduct->get_available_variations();
+
     if ($WcProduct->is_type('variable')) {
-        $attributes = $WcProduct->get_variation_attributes();
-        $formatted_attributes = [];
-    
-        // Iterar sobre cada atributo
-        foreach ($attributes as $attribute_name => $values) {
-            // Limpiar el nombre del atributo
-            $clean_name = str_replace('pa_', '', $attribute_name);
-            
-            // Preparar el objeto del atributo
-            $attribute_data = new stdClass();
-            $attribute_data->name = $clean_name;
-            $attribute_data->label = wc_attribute_label($attribute_name);
-            $attribute_data->options = [];
-    
-            // Obtener las opciones del atributo
+        $variations_data = new stdClass();
+        $variations_data->attributes = [];
+        $variations_data->variation_map = [];
+        
+        // Procesar atributos
+        $attributesLoop = $WcProduct->get_variation_attributes(true);
+        foreach ($attributesLoop as $attribute_name => $values) {
+            $attribute          = new stdClass();
+            $attribute->name    = strtolower('attribute_'.$attribute_name);
+            $attribute->label   = wc_attribute_label($attribute_name, $WcProduct);
+            $attribute->options = [];
+
             if (taxonomy_exists($attribute_name)) {
-                // Para atributos taxonomía
                 $terms = get_terms([
                     'taxonomy' => $attribute_name,
                     'hide_empty' => false,
                     'include' => $values
                 ]);
-    
+
                 foreach ($terms as $term) {
-                    $option = new stdClass();
-                    $option->value = $term->slug;
-                    $option->label = $term->name;
-                    $option->description = $term->description;
-                    array_push($attribute_data->options, $option);
+                    $attribute->options[] = (object)[
+                        'value' => $term->slug,
+                        'label' => $term->name, // Mantener el case original
+                        'description' => $term->description
+                    ];
                 }
             } else {
-                // Para atributos personalizados
                 foreach ($values as $value) {
-                    $option = new stdClass();
-                    $option->value = $value;
-                    $option->label = $value;
-                    $option->description = '';
-                    array_push($attribute_data->options, $option);
+                    $attribute->options[] = (object)[
+                        'value' => $value,
+                        'label' => $value, // Mantener el case original
+                        'description' => ''
+                    ];
                 }
             }
-    
-            $formatted_attributes[] = $attribute_data;
-        }
-    
-        // Obtener variaciones disponibles
-        $variations_data = [];
-        $available_variations = $WcProduct->get_available_variations();
-    
-        foreach ($available_variations as $variation) {
-            $variation_obj = [
-                'variation_id' => $variation['variation_id'],
-                'price' => $variation['display_price'],
-                'regular_price' => $variation['display_regular_price'],
-                'is_in_stock' => $variation['is_in_stock'],
-                'attributes' => []
-            ];
-    
-            foreach ($variation['attributes'] as $key => $value) {
-                $clean_key = str_replace(['attribute_', 'pa_'], '', $key);
-                $variation_obj['attributes'][$clean_key] = $value;
-            }
-    
-            $variations_data[] = $variation_obj;
+            
+            $variations_data->attributes[] = $attribute;
         }
 
-        $output = new stdClass();
-        $output->attributes = $formatted_attributes;
-        $output->variations = $variations_data;
-
-        $theProduct->variations = $output;
+        $theProduct->variations = $variations_data;
     }
 
     return $theProduct;
