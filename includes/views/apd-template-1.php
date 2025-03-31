@@ -36,6 +36,7 @@
         <div><?php echo $product->short_description; ?></div>
         <div class="price">
             <?php echo $product->price_html; ?></div>
+        <div class="variation-description"></div>
         
         <?php
         $variation = $product->variations;
@@ -62,7 +63,6 @@
             endforeach;
         endif;
         ?>
-        <div class="variation-description"></div>
         <div class="cart-group">
             <div class="quantity">
                 <div><span class="in-stock"><?php _e('En stock','ajax-product-details'); ?></span></div>

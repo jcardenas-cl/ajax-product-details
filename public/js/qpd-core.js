@@ -79,8 +79,13 @@ class QuickProductDetails {
                 document.querySelector('.price').innerHTML = matchingVariation.price_html;
 
                 // Actualizar stock
-                document.querySelector('.in-stock').textContent = 
-                    matchingVariation.is_in_stock ? 'En stock' : 'Sin stock';
+                if (matchingVariation.is_in_stock) {
+                    document.querySelector('.in-stock').textContent = 'En stock'
+                    document.querySelector('.apd-add-to-cart').removeAttribute('disabled')
+                } else {
+                    document.querySelector('.in-stock').textContent = 'Sin stock'
+                    document.querySelector('.apd-add-to-cart').setAttribute('disabled', 'disabled')
+                }
 
                 // Actualizar descripción si existe
                 if (matchingVariation.variation_description) {

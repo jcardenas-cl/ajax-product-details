@@ -131,6 +131,13 @@
                     font-size: 1.2em;
                     font-weight: bold;
                 }
+                .variation-description {
+                    p {
+                        margin: 5px 0 0 0;
+                        padding: 0;
+                        font-size: .8em;
+                    }
+                }
                 .variation-row {
                     margin-top: 20px;
                     span {
@@ -179,7 +186,11 @@
                     font-style: italic;
                 }
                 .apd-add-to-cart {
-                    @include index.apd_button
+                    @include index.apd_button;
+                    &:disabled {
+                        background-color: index.$color_gray;
+                        cursor: not-allowed;
+                    }
                 }
             }
         }
