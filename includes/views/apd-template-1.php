@@ -33,7 +33,7 @@
 
     <!-- Sección con los contenidos -->
     <div class="modal-content">
-        <div><?php echo $product->short_description; ?></div>
+        <div><?php echo $product->description; ?></div>
         <div class="price">
             <?php echo $product->price_html; ?></div>
         <div class="variation-description"></div>
@@ -74,6 +74,7 @@
                     max="2">
             </div>
             <button 
+                title="Agregar al carrito"
                 data-product-id="<?php echo $product->ID; ?>"
                 class="apd-add-to-cart"
                 <?php echo $product->type === 'variable' ? 'disabled' : ''; ?>>
@@ -82,9 +83,9 @@
             <input type="hidden" name="variation-map" id="variation-map" value='<?php echo wp_json_encode($product->available_variations); ?>'>
         </div>
         
-        <div>
+        <div class="view-full-details">
             <a 
-            class="view-full-details"
+            title="Ver todos los detalles"
             href="<?php echo $product->permalink; ?>">Ver todos los detalles</a>
         </div>
     </div>
