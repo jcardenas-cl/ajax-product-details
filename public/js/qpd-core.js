@@ -100,6 +100,7 @@ class QuickProductDetails {
         if (allSelected) {
             // Obtener el JSON de variaciones generado por WooCommerce
             const variationData = JSON.parse(document.getElementById('variation-map').value);
+            document.querySelector('.apd-add-to-cart').removeAttribute('disabled')
 
             // Buscar la variación que coincida con las selecciones
             const matchingVariation = variationData.find(variation => {

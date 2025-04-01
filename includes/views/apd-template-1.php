@@ -74,8 +74,11 @@
                     max="2">
             </div>
             <button 
-            data-product-id="<?php echo $product->ID; ?>"
-            class="apd-add-to-cart">Agregar al carrito</button>
+                data-product-id="<?php echo $product->ID; ?>"
+                class="apd-add-to-cart"
+                <?php echo $product->type === 'variable' ? 'disabled' : ''; ?>>
+                Agregar al carrito
+            </button>
             <input type="hidden" name="variation-map" id="variation-map" value='<?php echo wp_json_encode($product->available_variations); ?>'>
         </div>
         
