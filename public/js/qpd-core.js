@@ -58,17 +58,24 @@ class QuickProductDetails {
             if (productId) {
                 document.querySelector('.apd-add-to-cart').setAttribute('disabled', 'disabled')
                 document.querySelector('.apd-add-to-cart').textContent = 'Agregando...'
-                const response = await this.addToCart(productId, quantity, variationId);
-                if (response) {
+                const resultOk = await this.addToCart(productId, quantity, variationId);
+                if (resultOk) {
                     document.querySelector('.apd-add-to-cart').textContent = 'Agregado con éxito'
                     document.querySelector('.apd-add-to-cart').removeAttribute('disabled')
+                    document.querySelector('.apd-add-to-cart').classList.add('success')
                     setTimeout(() => {
                         document.querySelector('.apd-add-to-cart').textContent = 'Agregar al carrito'
+                        document.querySelector('.apd-add-to-cart').classList.remove('success')
                     }, 1500);
                 } else {
                     // Aquí puedes agregar el código para mostrar un mensaje de error
                     document.querySelector('.apd-add-to-cart').removeAttribute('disabled')
                     document.querySelector('.apd-add-to-cart').textContent = 'Error al agregar'
+                    document.querySelector('.apd-add-to-cart').classList.add('error')
+                    setTimeout(() => {
+                        document.querySelector('.apd-add-to-cart').textContent = 'Agregar al carrito'
+                        document.querySelector('.apd-add-to-cart').classList.remove('error')
+                    }, 1500);
                 }
             }
         })

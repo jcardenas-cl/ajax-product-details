@@ -187,9 +187,14 @@
                 }
                 .apd-add-to-cart {
                     @include index.apd_button;
+                    transition: background-color 0.7s ease;
                     &:disabled {
                         background-color: index.$color_gray;
                         cursor: not-allowed;
+                    };
+                    &.success {
+                        background-color: index.$color_green;
+                        color: #fff;
                     }
                 }
             }
